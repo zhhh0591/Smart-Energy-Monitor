@@ -10,15 +10,14 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { ConnectionStatus, EnergyReading, MQTT_CONFIG, useMqtt } from "@/hooks/useMqtt";
+import type { EnergyReading } from "@/hooks/useMqtt";
+import { MQTT_CONFIG } from "@/hooks/useMqtt";
+import { useMockData } from "@/hooks/useMockData";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
-const statusCopy: Record<ConnectionStatus, { label: string; dot: string; text: string }> = {
-  connected: { label: "已连接", dot: "bg-emerald-400 shadow-emerald-400/60", text: "text-emerald-300" },
-  disconnected: { label: "断开", dot: "bg-red-500 shadow-red-500/60", text: "text-red-300" },
-  reconnecting: { label: "重连中", dot: "bg-amber-400 shadow-amber-400/60", text: "text-amber-200" },
-};
+const dataSourceLabel = "Mock data";
+const accentColor = "#FF5A5F";
 
 const metrics: Array<{ key: keyof EnergyReading; label: string; unit: string; precision: number }> = [
   { key: "voltage", label: "Voltage", unit: "V", precision: 2 },
@@ -28,8 +27,8 @@ const metrics: Array<{ key: keyof EnergyReading; label: string; unit: string; pr
 ];
 
 export default function DashboardPage() {
-  const { status, latest, powerHistory, error } = useMqtt();
-  const statusInfo = statusCopy[status];
+  // 当前阶段使用模拟数据。之后接入硬件时，只需要把这里替换成 useMqtt()。
+  const { latest, powerHistory } = useMockData();
 
   const chartData = {
     labels: powerHistory.map((point) => point.time),
@@ -37,85 +36,108 @@ export default function DashboardPage() {
       {
         label: "Power (mW)",
         data: powerHistory.map((point) => point.value),
-        borderColor: "#22d3ee",
-        backgroundColor: "rgba(34, 211, 238, 0.14)",
-        pointBackgroundColor: "#67e8f9",
-        pointBorderWidth: 0,
-        pointRadius: 2,
-        borderWidth: 2,
-        tension: 0.35,
+        borderColor: accentColor,
+        backgroundColor: "rgba(255, 90, 95, 0.10)",
+        pointBackgroundColor: accentColor,
+        pointBorderColor: "#FFFFFF",
+        pointBorderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 2.5,
+        tension: 0.38,
         fill: true,
       },
     ],
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-950 text-slate-100">
-      <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.24),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.92),rgba(2,6,23,1))]" />
-      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-4 rounded-3xl border border-cyan-400/10 bg-slate-900/70 p-5 shadow-glow backdrop-blur md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">IoT Energy Monitor</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-4xl">电能监测仪表盘</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-400">
-              纯前端通过 MQTT over WebSocket 订阅实时设备数据，当前 Topic：
-              <span className="font-mono text-cyan-200">{MQTT_CONFIG.topic}</span>
+    <main className="min-h-screen bg-[#FAFAFA] text-[#222222]">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-5 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-16">
+        <header className="flex flex-col gap-8 rounded-2xl bg-white px-6 py-7 shadow-soft transition duration-300 sm:px-8 sm:py-9 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-[#FF5A5F]">IoT Energy Monitor</p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-[#222222] sm:text-5xl lg:text-6xl">
+              Home Energy Dashboard
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[#717171] sm:text-lg">
+              A calm, real-time view of your device readings. This version uses local mock data and is ready to switch to MQTT over WebSocket for topic{" "}
+              <span className="rounded-full bg-[#FFF1F1] px-2.5 py-1 font-mono text-sm text-[#D94A4F]">{MQTT_CONFIG.topic}</span>.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3">
-            <span className={`h-3 w-3 rounded-full shadow-[0_0_14px] ${statusInfo.dot}`} />
-            <div>
-              <p className="text-xs text-slate-500">MQTT Status</p>
-              <p className={`font-semibold ${statusInfo.text}`}>{statusInfo.label}</p>
+          <div className="w-full rounded-2xl bg-[#FAFAFA] p-5 shadow-inner-soft sm:w-auto sm:min-w-56">
+            <div className="flex items-center gap-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#FF5A5F] shadow-[0_0_0_6px_rgba(255,90,95,0.12)]" />
+              <div>
+                <p className="text-sm text-[#717171]">Data source</p>
+                <p className="mt-1 text-lg font-semibold text-[#222222]">{dataSourceLabel}</p>
+              </div>
             </div>
           </div>
         </header>
 
-        {error ? (
-          <div className="rounded-2xl border border-red-400/20 bg-red-950/30 px-4 py-3 text-sm text-red-200">连接提示：{error}</div>
-        ) : null}
-
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {metrics.map((metric) => (
-            <article key={metric.key} className="rounded-3xl border border-white/10 bg-slate-900/75 p-5 shadow-xl backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-cyan-300/30">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-slate-400">{metric.label}</p>
-                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-2 py-1 text-xs text-cyan-200">LIVE</span>
+            <article
+              key={metric.key}
+              className="rounded-2xl bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-soft-lg sm:p-7"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-sm font-medium text-[#717171]">{metric.label}</p>
+                <span className="rounded-full bg-[#FFF1F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#FF5A5F]">Live</span>
               </div>
-              <div className="mt-5 flex items-end gap-2">
-                <span className="font-mono text-4xl font-semibold tabular-nums tracking-tight text-white transition-all duration-300 md:text-5xl">
+              <div className="mt-8 flex items-baseline gap-2">
+                <span className="font-mono text-4xl font-semibold tabular-nums tracking-[-0.04em] text-[#222222] transition-all duration-300 sm:text-5xl">
                   {latest[metric.key].toFixed(metric.precision)}
                 </span>
-                <span className="pb-2 text-sm text-slate-400">{metric.unit}</span>
+                <span className="text-base font-medium text-[#717171]">{metric.unit}</span>
               </div>
             </article>
           ))}
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-4 shadow-2xl backdrop-blur sm:p-6">
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <section className="rounded-2xl bg-white p-6 shadow-soft sm:p-8 lg:p-10">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-cyan-300/70">Realtime Trend</p>
-              <h2 className="mt-1 text-2xl font-semibold text-white">Power 实时功率曲线</h2>
+              <p className="text-sm font-medium uppercase tracking-[0.22em] text-[#FF5A5F]">Real-time trend</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#222222] sm:text-4xl">Power over time</h2>
             </div>
-            <p className="text-sm text-slate-400">最近 {Math.min(powerHistory.length, 60)} / 60 个数据点</p>
+            <p className="text-sm leading-6 text-[#717171]">Showing the latest {Math.min(powerHistory.length, 60)} of 60 readings</p>
           </div>
 
-          <div className="h-[320px] w-full sm:h-[420px]">
+          <div className="h-[320px] w-full sm:h-[430px]">
             <Line
               data={chartData}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: { duration: 450 },
+                interaction: { mode: "index", intersect: false },
                 plugins: {
                   legend: { display: false },
-                  tooltip: { mode: "index", intersect: false },
+                  tooltip: {
+                    mode: "index",
+                    intersect: false,
+                    backgroundColor: "rgba(34, 34, 34, 0.92)",
+                    titleColor: "#FFFFFF",
+                    bodyColor: "#FFFFFF",
+                    padding: 12,
+                    cornerRadius: 12,
+                    displayColors: false,
+                  },
                 },
                 scales: {
-                  x: { grid: { color: "rgba(148, 163, 184, 0.12)" }, ticks: { color: "#94a3b8", maxTicksLimit: 8 } },
-                  y: { grid: { color: "rgba(148, 163, 184, 0.12)" }, ticks: { color: "#94a3b8" }, title: { display: true, text: "mW", color: "#67e8f9" } },
+                  x: {
+                    border: { display: false },
+                    grid: { color: "rgba(113, 113, 113, 0.08)" },
+                    ticks: { color: "#717171", maxTicksLimit: 8, padding: 10 },
+                  },
+                  y: {
+                    border: { display: false },
+                    grid: { color: "rgba(113, 113, 113, 0.08)" },
+                    ticks: { color: "#717171", padding: 10 },
+                    title: { display: true, text: "mW", color: "#717171" },
+                  },
                 },
               }}
             />
