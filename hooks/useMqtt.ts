@@ -3,7 +3,7 @@
 import mqtt, { MqttClient } from "mqtt";
 import { useEffect, useReducer, useRef } from "react";
 
-// 浏览器只能连接 MQTT over WebSocket。请把 brokerUrl 改成你的 WebSocket 地址，不能使用 1883 TCP 端口。
+// Browsers can only connect to MQTT over WebSocket, not the TCP 1883 port.
 export const MQTT_CONFIG = {
   brokerUrl: "wss://broker.emqx.io:8084/mqtt",
   topic: "your/topic/here",
@@ -55,11 +55,11 @@ function reducer(state: MqttState, action: MqttAction): MqttState {
       return { ...state, status: action.status, error: action.error };
     case "MESSAGE": {
       const nextPoint = {
-        time: new Date().toLocaleTimeString("zh-CN", { hour12: false }),
+        time: new Date().toLocaleTimeString("en-US", { hour12: false }),
         value: action.payload.power,
       };
 
-      // 只保留最近 60 秒左右的数据，避免图表持续膨胀影响浏览器性能。
+      // Keep the chart focused on roughly the latest 60 seconds of data.
       const powerHistory = [...state.powerHistory, nextPoint].slice(-60);
 
       return {
@@ -125,7 +125,7 @@ export function useMqtt() {
         const reading = normalizeReading(parsed);
         if (reading) dispatch({ type: "MESSAGE", payload: reading });
       } catch {
-        // 非 JSON 消息会被忽略，避免单条异常数据导致仪表盘崩溃。
+        // Ignore non-JSON messages so a single bad payload does not crash the dashboard.
       }
     });
 
