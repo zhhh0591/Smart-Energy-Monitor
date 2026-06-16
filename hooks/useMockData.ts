@@ -29,11 +29,11 @@ function energyDataReducer(state: EnergyDataState, action: EnergyDataAction): En
   switch (action.type) {
     case "READING_RECEIVED": {
       const nextPoint: PowerPoint = {
-        time: new Date().toLocaleTimeString("zh-CN", { hour12: false }),
+        time: new Date().toLocaleTimeString("en-US", { hour12: false }),
         value: action.payload.power,
       };
 
-      // 图表只需要滚动展示最近 60 个点，避免运行很久后数组无限增长。
+      // Keep the chart focused on the latest 60 readings.
       const powerHistory = [...state.powerHistory, nextPoint].slice(-60);
 
       return {
@@ -53,7 +53,7 @@ function createMockReading(previousEnergy: number): EnergyReading {
   const current = randomBetween(100, 300);
   const power = voltage * current;
 
-  // 每秒新增的 Wh = mW / 1000 / 3600，模拟累计电能持续上升。
+  // Added Wh per second = mW / 1000 / 3600.
   const energy = previousEnergy + power / 1000 / 3600;
 
   return {
@@ -75,7 +75,7 @@ export function useMockData() {
       dispatch({ type: "READING_RECEIVED", payload: reading });
     };
 
-    // 首次进入页面立即显示一条数据，之后按硬件计划的 1 秒节奏推送。
+    // Show one reading immediately, then continue at the planned 1 second hardware cadence.
     pushMockReading();
     const timerId = window.setInterval(pushMockReading, 1000);
 

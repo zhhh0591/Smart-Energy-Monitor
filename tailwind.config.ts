@@ -5,13 +5,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        panel: "#FFFFFF",
-        steel: "#717171",
+        ios: {
+          bg: "#F2F2F7",
+          card: "#FFFFFF",
+          ink: "#1D1D1F",
+          muted: "#8E8E93",
+          green: "#34C759",
+          red: "#FF3B30",
+        },
       },
       boxShadow: {
-        soft: "0 18px 50px rgba(34, 34, 34, 0.07)",
-        "soft-lg": "0 24px 70px rgba(34, 34, 34, 0.11)",
-        "inner-soft": "inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 30px rgba(34, 34, 34, 0.04)",
+        "ios-soft": "0 4px 24px rgba(0, 0, 0, 0.06)",
+        "ios-soft-hover": "0 8px 32px rgba(0, 0, 0, 0.08)",
+      },
+      fontFamily: {
+        sans: ["-apple-system", "BlinkMacSystemFont", '"SF Pro Display"', '"Segoe UI"', "sans-serif"],
+      },
+      keyframes: {
+        "card-in": {
+          "0%": { opacity: "0", transform: "translateY(14px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "card-in": "card-in 360ms ease-out both",
       },
     },
   },
