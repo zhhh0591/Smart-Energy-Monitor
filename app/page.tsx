@@ -14,10 +14,27 @@ import { ConnectionStatus, EnergyReading, MQTT_CONFIG, useMqtt } from "@/hooks/u
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
-const statusCopy: Record<ConnectionStatus, { label: string; dot: string; text: string }> = {
-  connected: { label: "已连接", dot: "bg-emerald-400 shadow-emerald-400/60", text: "text-emerald-300" },
-  disconnected: { label: "断开", dot: "bg-red-500 shadow-red-500/60", text: "text-red-300" },
-  reconnecting: { label: "重连中", dot: "bg-amber-400 shadow-amber-400/60", text: "text-amber-200" },
+const appleBlue = "#0071E3";
+
+const statusCopy: Record<ConnectionStatus, { label: string; dot: string; text: string; surface: string }> = {
+  connected: {
+    label: "Connected",
+    dot: "bg-[#34C759] shadow-[0_0_0_6px_rgba(52,199,89,0.14)]",
+    text: "text-[#1D1D1F]",
+    surface: "bg-[#EAF8EF]",
+  },
+  disconnected: {
+    label: "Disconnected",
+    dot: "bg-[#FF3B30] shadow-[0_0_0_6px_rgba(255,59,48,0.14)]",
+    text: "text-[#1D1D1F]",
+    surface: "bg-[#FFF0EF]",
+  },
+  reconnecting: {
+    label: "Reconnecting",
+    dot: "bg-[#FF9500] shadow-[0_0_0_6px_rgba(255,149,0,0.14)]",
+    text: "text-[#1D1D1F]",
+    surface: "bg-[#FFF6E8]",
+  },
 };
 
 const metrics: Array<{ key: keyof EnergyReading; label: string; unit: string; precision: number }> = [
@@ -37,85 +54,132 @@ export default function DashboardPage() {
       {
         label: "Power (mW)",
         data: powerHistory.map((point) => point.value),
-        borderColor: "#22d3ee",
-        backgroundColor: "rgba(34, 211, 238, 0.14)",
-        pointBackgroundColor: "#67e8f9",
-        pointBorderWidth: 0,
-        pointRadius: 2,
-        borderWidth: 2,
-        tension: 0.35,
+        borderColor: appleBlue,
+        backgroundColor: "rgba(0, 113, 227, 0.10)",
+        pointBackgroundColor: appleBlue,
+        pointBorderColor: "#FFFFFF",
+        pointBorderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 2.5,
+        tension: 0.38,
         fill: true,
       },
     ],
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-950 text-slate-100">
-      <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.24),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.92),rgba(2,6,23,1))]" />
-      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-4 rounded-3xl border border-cyan-400/10 bg-slate-900/70 p-5 shadow-glow backdrop-blur md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">IoT Energy Monitor</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-4xl">电能监测仪表盘</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-400">
-              纯前端通过 MQTT over WebSocket 订阅实时设备数据，当前 Topic：
-              <span className="font-mono text-cyan-200">{MQTT_CONFIG.topic}</span>
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3">
-            <span className={`h-3 w-3 rounded-full shadow-[0_0_14px] ${statusInfo.dot}`} />
+    <main className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F]">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-6 sm:px-8 lg:px-12 lg:py-10">
+        <header className="sticky top-4 z-10 rounded-[20px] bg-white/72 px-5 py-4 shadow-apple backdrop-blur-2xl transition duration-300 sm:px-7">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-xs text-slate-500">MQTT Status</p>
-              <p className={`font-semibold ${statusInfo.text}`}>{statusInfo.label}</p>
+              <p className="text-sm font-semibold tracking-[-0.01em] text-[#0071E3]">Smart Energy Monitor</p>
+              <h1 className="mt-2 text-3xl font-bold tracking-[-0.045em] text-[#1D1D1F] sm:text-5xl">Energy Dashboard</h1>
+            </div>
+
+            <div className={`flex w-full items-center justify-between gap-4 rounded-full px-4 py-3 md:w-auto ${statusInfo.surface}`}>
+              <div className="flex items-center gap-3">
+                <span className={`h-2.5 w-2.5 rounded-full ${statusInfo.dot}`} />
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#86868B]">MQTT status</p>
+                  <p className={`text-sm font-semibold ${statusInfo.text}`}>{statusInfo.label}</p>
+                </div>
+              </div>
             </div>
           </div>
         </header>
 
+        <section className="rounded-[20px] bg-white p-7 shadow-apple sm:p-9 lg:p-10">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0071E3]">Live home telemetry</p>
+              <h2 className="mt-4 text-4xl font-bold leading-[1.05] tracking-[-0.055em] text-[#1D1D1F] sm:text-6xl">
+                A quiet view of your device in real time.
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-[#86868B] sm:text-lg">
+                The browser connects directly to MQTT over WebSocket and listens for energy readings on topic{" "}
+                <span className="rounded-full bg-[#F5F5F7] px-3 py-1 font-mono text-sm text-[#1D1D1F]">{MQTT_CONFIG.topic}</span>.
+              </p>
+            </div>
+
+            <div className="inline-flex items-center gap-3 rounded-full bg-[#F5F5F7] px-5 py-3 text-sm font-semibold text-[#1D1D1F] transition duration-300 hover:bg-[#E8F2FF]">
+              <span className="h-2 w-2 rounded-full bg-[#0071E3] shadow-[0_0_0_6px_rgba(0,113,227,0.12)]" />
+              Live stream
+            </div>
+          </div>
+        </section>
+
         {error ? (
-          <div className="rounded-2xl border border-red-400/20 bg-red-950/30 px-4 py-3 text-sm text-red-200">连接提示：{error}</div>
+          <div className="rounded-[18px] bg-white px-5 py-4 text-sm leading-6 text-[#86868B] shadow-apple">
+            <span className="font-semibold text-[#1D1D1F]">Connection notice:</span> {error}
+          </div>
         ) : null}
 
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {metrics.map((metric) => (
-            <article key={metric.key} className="rounded-3xl border border-white/10 bg-slate-900/75 p-5 shadow-xl backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-cyan-300/30">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-slate-400">{metric.label}</p>
-                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-2 py-1 text-xs text-cyan-200">LIVE</span>
+            <article
+              key={metric.key}
+              className="rounded-[20px] bg-white p-7 shadow-apple transition duration-300 hover:-translate-y-1 hover:shadow-apple-lg active:scale-[0.99]"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-sm font-semibold text-[#86868B]">{metric.label}</p>
+                <span className="rounded-full bg-[#E8F2FF] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071E3]">Live</span>
               </div>
-              <div className="mt-5 flex items-end gap-2">
-                <span className="font-mono text-4xl font-semibold tabular-nums tracking-tight text-white transition-all duration-300 md:text-5xl">
+              <div className="mt-9 flex items-baseline gap-2">
+                <span className="font-mono text-4xl font-semibold tabular-nums tracking-[-0.05em] text-[#1D1D1F] transition-all duration-300 sm:text-5xl">
                   {latest[metric.key].toFixed(metric.precision)}
                 </span>
-                <span className="pb-2 text-sm text-slate-400">{metric.unit}</span>
+                <span className="text-base font-semibold text-[#86868B]">{metric.unit}</span>
               </div>
             </article>
           ))}
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-slate-900/80 p-4 shadow-2xl backdrop-blur sm:p-6">
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <section className="rounded-[20px] bg-white p-6 shadow-apple sm:p-8 lg:p-10">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-cyan-300/70">Realtime Trend</p>
-              <h2 className="mt-1 text-2xl font-semibold text-white">Power 实时功率曲线</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0071E3]">Power trend</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-[-0.045em] text-[#1D1D1F] sm:text-4xl">Power over time</h2>
             </div>
-            <p className="text-sm text-slate-400">最近 {Math.min(powerHistory.length, 60)} / 60 个数据点</p>
+            <p className="rounded-full bg-[#F5F5F7] px-4 py-2 text-sm font-medium text-[#86868B]">
+              Latest {Math.min(powerHistory.length, 60)} of 60 readings
+            </p>
           </div>
 
-          <div className="h-[320px] w-full sm:h-[420px]">
+          <div className="h-[320px] w-full sm:h-[430px]">
             <Line
               data={chartData}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: { duration: 450 },
+                interaction: { mode: "index", intersect: false },
                 plugins: {
                   legend: { display: false },
-                  tooltip: { mode: "index", intersect: false },
+                  tooltip: {
+                    mode: "index",
+                    intersect: false,
+                    backgroundColor: "rgba(29, 29, 31, 0.92)",
+                    titleColor: "#FFFFFF",
+                    bodyColor: "#FFFFFF",
+                    padding: 12,
+                    cornerRadius: 14,
+                    displayColors: false,
+                  },
                 },
                 scales: {
-                  x: { grid: { color: "rgba(148, 163, 184, 0.12)" }, ticks: { color: "#94a3b8", maxTicksLimit: 8 } },
-                  y: { grid: { color: "rgba(148, 163, 184, 0.12)" }, ticks: { color: "#94a3b8" }, title: { display: true, text: "mW", color: "#67e8f9" } },
+                  x: {
+                    border: { display: false },
+                    grid: { color: "rgba(134, 134, 139, 0.10)" },
+                    ticks: { color: "#86868B", maxTicksLimit: 8, padding: 10 },
+                  },
+                  y: {
+                    border: { display: false },
+                    grid: { color: "rgba(134, 134, 139, 0.10)" },
+                    ticks: { color: "#86868B", padding: 10 },
+                    title: { display: true, text: "mW", color: "#86868B" },
+                  },
                 },
               }}
             />
