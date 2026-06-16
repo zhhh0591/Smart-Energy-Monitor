@@ -5,11 +5,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        panel: "#111827",
-        steel: "#94a3b8",
+        panel: "#FFFFFF",
+        steel: "#717171",
       },
       boxShadow: {
-        glow: "0 0 32px rgba(34, 211, 238, 0.16)",
+        soft: "0 18px 50px rgba(34, 34, 34, 0.07)",
+        "soft-lg": "0 24px 70px rgba(34, 34, 34, 0.11)",
+        "inner-soft": "inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 30px rgba(34, 34, 34, 0.04)",
       },
     },
   },
