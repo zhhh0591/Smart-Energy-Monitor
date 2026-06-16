@@ -10,15 +10,13 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { ConnectionStatus, EnergyReading, MQTT_CONFIG, useMqtt } from "@/hooks/useMqtt";
+import type { EnergyReading } from "@/hooks/useMqtt";
+import { MQTT_CONFIG } from "@/hooks/useMqtt";
+import { useMockData } from "@/hooks/useMockData";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
-const statusCopy: Record<ConnectionStatus, { label: string; dot: string; text: string }> = {
-  connected: { label: "已连接", dot: "bg-emerald-400 shadow-emerald-400/60", text: "text-emerald-300" },
-  disconnected: { label: "断开", dot: "bg-red-500 shadow-red-500/60", text: "text-red-300" },
-  reconnecting: { label: "重连中", dot: "bg-amber-400 shadow-amber-400/60", text: "text-amber-200" },
-};
+const dataSourceLabel = "模拟数据源";
 
 const metrics: Array<{ key: keyof EnergyReading; label: string; unit: string; precision: number }> = [
   { key: "voltage", label: "Voltage", unit: "V", precision: 2 },
@@ -28,8 +26,8 @@ const metrics: Array<{ key: keyof EnergyReading; label: string; unit: string; pr
 ];
 
 export default function DashboardPage() {
-  const { status, latest, powerHistory, error } = useMqtt();
-  const statusInfo = statusCopy[status];
+  // 当前阶段使用模拟数据。之后接入硬件时，只需要把这里替换成 useMqtt()。
+  const { latest, powerHistory } = useMockData();
 
   const chartData = {
     labels: powerHistory.map((point) => point.time),
@@ -58,23 +56,20 @@ export default function DashboardPage() {
             <p className="text-sm uppercase tracking-[0.35em] text-cyan-300/80">IoT Energy Monitor</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-4xl">电能监测仪表盘</h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-400">
-              纯前端通过 MQTT over WebSocket 订阅实时设备数据，当前 Topic：
+              当前使用本地模拟数据每秒刷新；接入硬件时可切换到 MQTT over WebSocket，Topic：
               <span className="font-mono text-cyan-200">{MQTT_CONFIG.topic}</span>
             </p>
           </div>
 
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3">
-            <span className={`h-3 w-3 rounded-full shadow-[0_0_14px] ${statusInfo.dot}`} />
+            <span className="h-3 w-3 rounded-full bg-emerald-400 shadow-[0_0_14px] shadow-emerald-400/60" />
             <div>
-              <p className="text-xs text-slate-500">MQTT Status</p>
-              <p className={`font-semibold ${statusInfo.text}`}>{statusInfo.label}</p>
+              <p className="text-xs text-slate-500">Data Source</p>
+              <p className="font-semibold text-emerald-300">{dataSourceLabel}</p>
             </div>
           </div>
         </header>
 
-        {error ? (
-          <div className="rounded-2xl border border-red-400/20 bg-red-950/30 px-4 py-3 text-sm text-red-200">连接提示：{error}</div>
-        ) : null}
 
         <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {metrics.map((metric) => (
