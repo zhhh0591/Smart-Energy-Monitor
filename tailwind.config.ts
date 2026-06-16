@@ -5,11 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        panel: "#111827",
-        steel: "#94a3b8",
+        panel: "#FFFFFF",
+        steel: "#86868B",
       },
       boxShadow: {
-        glow: "0 0 32px rgba(34, 211, 238, 0.16)",
+        apple: "0 22px 70px rgba(29, 29, 31, 0.08)",
+        "apple-lg": "0 28px 90px rgba(29, 29, 31, 0.12)",
       },
     },
   },
