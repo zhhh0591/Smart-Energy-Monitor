@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 880" font-family="ui-sans-serif,-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif">
+  <style>
+    .wire{fill:none;stroke-linejoin:round;stroke-linecap:round}
+    .sig{stroke-width:4}
+    .pwr{stroke-width:6}
+    .pin{fill:#d4a017;stroke:#8a6a0f;stroke-width:1}
+    .plbl{font-size:12px;fill:#e5e7eb}
+    .cap{font-size:12px;fill:#374151}
+  </style>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1280" height="880" fill="#ffffff"/>
+
+  <!-- 标题 -->
+  <text x="640" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#111827">Phase 4 · 继电器控制与保护接线图</text>
+  <text x="640" y="58" text-anchor="middle" font-size="13" fill="#6b7280">电流路径：电池+ → INA219 Vin+ → Vin− → 继电器 COM → NO → 风扇红线 → 风扇黑线 → 电池−　｜　GPIO26 控制通断</text>
+
+  <!-- ================= 连线（画在元件下层） ================= -->
+  <!-- 3V3 -> INA219 VCC（红） -->
+  <path class="wire sig" stroke="#d92626" d="M256,210 H290 V130 H426"/>
+  <!-- 3V3 分支 -> 继电器 VCC（红），分支点在红线水平段上 -->
+  <path class="wire sig" stroke="#d92626" d="M400,130 V410 H800 V294"/>
+  <circle cx="400" cy="130" r="5" fill="#d92626"/>
+  <!-- GND -> INA219 GND（黑） -->
+  <path class="wire sig" stroke="#222222" d="M256,270 H315 V165 H426"/>
+  <!-- GPIO22 -> SCL（黄） -->
+  <path class="wire sig" stroke="#e6b800" d="M256,330 H340 V200 H426"/>
+  <!-- GPIO21 -> SDA（蓝） -->
+  <path class="wire sig" stroke="#2563eb" d="M256,390 H365 V235 H426"/>
+  <!-- GPIO26 -> 继电器 IN（绿） -->
+  <path class="wire sig" stroke="#16a34a" d="M256,450 H860 V294"/>
+  <!-- 继电器 GND -> 共地（黑） -->
+  <path class="wire sig" stroke="#222222" d="M920,294 V600"/>
+
+  <!-- 电池+ -> INA219 Vin+（粗红，大电流，绕外圈） -->
+  <path class="wire pwr" stroke="#d92626" d="M1160,636 V620 H1250 V74 H700 V140 H672"/>
+  <!-- Vin- -> 继电器 COM（粗红） -->
+  <path class="wire pwr" stroke="#d92626" d="M672,220 H736"/>
+  <!-- 继电器 NO -> 风扇红线（粗红） -->
+  <path class="wire pwr" stroke="#d92626" d="M984,220 H1060"/>
+  <!-- 风扇黑线 -> 电池−（粗黑） -->
+  <path class="wire pwr" stroke="#222222" d="M1060,290 H1000 V636"/>
+  <!-- 共地：电池− -> ESP32 GND（黑），继电器 GND 汇入 -->
+  <path class="wire sig" stroke="#222222" d="M1000,600 H30 V350 H44"/>
+  <circle cx="1000" cy="600" r="5" fill="#222222"/>
+  <circle cx="920" cy="600" r="5" fill="#222222"/>
+
+  <!-- 电流方向箭头 -->
+  <g fill="#d92626">
+    <path d="M1250,352 L1243,366 L1257,366 Z"/>          <!-- 电池+ 向上 -->
+    <path d="M948,74 L962,67 L962,81 Z"/>                <!-- 顶部向左 -->
+    <path d="M700,112 L693,98 L707,98 Z"/>               <!-- 向下进 Vin+ -->
+    <path d="M712,220 L698,213 L698,227 Z"/>             <!-- Vin- -> COM -->
+    <path d="M1030,220 L1016,213 L1016,227 Z"/>          <!-- NO -> 风扇 -->
+  </g>
+  <path d="M1000,478 L993,464 L1007,464 Z" fill="#222222"/> <!-- 风扇黑线向下回电池 -->
+
+  <!-- 线路注释 -->
+  <text x="1100" y="98" text-anchor="middle" font-size="11" fill="#d92626">电池正极 → Vin+（先经 INA219）</text>
+  <text x="558" y="442" text-anchor="middle" font-size="11" fill="#16a34a">GPIO26 控制信号 → IN</text>
+  <text x="500" y="590" text-anchor="middle" font-size="11" fill="#374151">共地：电池− ↔ ESP32 GND ↔ 继电器 GND</text>
+  <text x="1052" y="208" text-anchor="end" font-size="11" fill="#d92626">红线 +</text>
+  <text x="1052" y="282" text-anchor="end" font-size="11" fill="#222222">黑线 −</text>
+
+  <!-- ================= ESP32 ================= -->
+  <g>
+    <rect x="60" y="150" width="180" height="380" rx="10" fill="#2f3640" stroke="#1e242b" stroke-width="2"/>
+    <rect x="85" y="170" width="130" height="85" rx="6" fill="#aab4c0" stroke="#7d8894" stroke-width="1.5"/>
+    <text x="150" y="207" text-anchor="middle" font-size="15" font-weight="700" fill="#2f3640">ESP32</text>
+    <text x="150" y="225" text-anchor="middle" font-size="10" fill="#4b5563">WROOM-32</text>
+    <text x="150" y="508" text-anchor="middle" font-size="14" font-weight="700" fill="#f3f4f6">ESP32 DevKit</text>
+    <rect x="125" y="522" width="50" height="14" rx="2" fill="#c0c7cf" stroke="#8a949f"/>
+    <!-- 右侧引脚 -->
+    <rect class="pin" x="238" y="205" width="18" height="10"/>
+    <rect class="pin" x="238" y="265" width="18" height="10"/>
+    <rect class="pin" x="238" y="325" width="18" height="10"/>
+    <rect class="pin" x="238" y="385" width="18" height="10"/>
+    <rect class="pin" x="238" y="445" width="18" height="10"/>
+    <text class="plbl" x="230" y="214" text-anchor="end">3V3</text>
+    <text class="plbl" x="230" y="274" text-anchor="end">GND</text>
+    <text class="plbl" x="230" y="334" text-anchor="end">GPIO22 · SCL</text>
+    <text class="plbl" x="230" y="394" text-anchor="end">GPIO21 · SDA</text>
+    <text class="plbl" x="230" y="454" text-anchor="end">GPIO26 · 继电器</text>
+    <!-- 左侧 GND 引脚（共地用） -->
+    <rect class="pin" x="44" y="345" width="18" height="10"/>
+    <text class="plbl" x="70" y="354">GND</text>
+  </g>
+
+  <!-- ================= INA219 ================= -->
+  <g>
+    <rect x="440" y="90" width="200" height="180" rx="8" fill="#7b2d8b" stroke="#5a1f66" stroke-width="2"/>
+    <text x="540" y="114" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">INA219 电流传感器</text>
+    <rect x="514" y="158" width="52" height="52" rx="3" fill="#1f2937" stroke="#000000"/>
+    <text x="540" y="188" text-anchor="middle" font-size="9" fill="#e5e7eb">INA219</text>
+    <!-- 左侧引脚 -->
+    <rect class="pin" x="424" y="125" width="18" height="10"/>
+    <rect class="pin" x="424" y="160" width="18" height="10"/>
+    <rect class="pin" x="424" y="195" width="18" height="10"/>
+    <rect class="pin" x="424" y="230" width="18" height="10"/>
+    <text class="plbl" x="448" y="134">VCC</text>
+    <text class="plbl" x="448" y="169">GND</text>
+    <text class="plbl" x="448" y="204">SCL</text>
+    <text class="plbl" x="448" y="239">SDA</text>
+    <!-- 右侧接线端子（大电流） -->
+    <rect x="616" y="115" width="56" height="130" rx="4" fill="#1e5aa8" stroke="#14406e" stroke-width="2"/>
+    <circle cx="644" cy="140" r="9" fill="#dbeafe" stroke="#0f2f57" stroke-width="2"/>
+    <line x1="638" y1="140" x2="650" y2="140" stroke="#0f2f57" stroke-width="2"/>
+    <circle cx="644" cy="220" r="9" fill="#dbeafe" stroke="#0f2f57" stroke-width="2"/>
+    <line x1="638" y1="220" x2="650" y2="220" stroke="#0f2f57" stroke-width="2"/>
+    <text x="608" y="144" text-anchor="end" font-size="12" font-weight="700" fill="#ffffff">Vin+</text>
+    <text x="608" y="224" text-anchor="end" font-size="12" font-weight="700" fill="#ffffff">Vin−</text>
+  </g>
+
+  <!-- ================= 继电器模块 ================= -->
+  <g>
+    <rect x="760" y="90" width="200" height="190" rx="8" fill="#1e429f" stroke="#152e70" stroke-width="2"/>
+    <text x="860" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">继电器模块 (Relay)</text>
+    <rect x="790" y="122" width="90" height="66" rx="4" fill="#4f86f7" stroke="#1e3a8a" stroke-width="1.5"/>
+    <text x="835" y="150" text-anchor="middle" font-size="9" fill="#ffffff">SRD-05VDC</text>
+    <text x="835" y="168" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">RELAY</text>
+    <!-- 开关触点端子：COM（左）/ NO（右） -->
+    <rect x="736" y="198" width="52" height="44" rx="4" fill="#1e5aa8" stroke="#14406e" stroke-width="2"/>
+    <circle cx="762" cy="214" r="7" fill="#dbeafe" stroke="#0f2f57" stroke-width="2"/>
+    <line x1="758" y1="214" x2="766" y2="214" stroke="#0f2f57" stroke-width="2"/>
+    <text x="762" y="237" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">COM</text>
+    <rect x="932" y="198" width="52" height="44" rx="4" fill="#1e5aa8" stroke="#14406e" stroke-width="2"/>
+    <circle cx="958" cy="214" r="7" fill="#dbeafe" stroke="#0f2f57" stroke-width="2"/>
+    <line x1="954" y1="214" x2="962" y2="214" stroke="#0f2f57" stroke-width="2"/>
+    <text x="958" y="237" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">NO</text>
+    <!-- 底部控制引脚：VCC / IN / GND -->
+    <rect class="pin" x="794" y="280" width="12" height="16"/>
+    <rect class="pin" x="854" y="280" width="12" height="16"/>
+    <rect class="pin" x="914" y="280" width="12" height="16"/>
+    <text x="800" y="272" text-anchor="middle" font-size="11" fill="#e5e7eb">VCC</text>
+    <text x="860" y="272" text-anchor="middle" font-size="11" fill="#e5e7eb">IN</text>
+    <text x="920" y="272" text-anchor="middle" font-size="11" fill="#e5e7eb">GND</text>
+  </g>
+
+  <!-- ================= 直流风扇 ================= -->
+  <g>
+    <rect x="1060" y="170" width="170" height="170" rx="16" fill="#4a5568" stroke="#2d3748" stroke-width="2"/>
+    <circle cx="1145" cy="255" r="70" fill="#374151"/>
+    <g fill="#a8b1bc" opacity="0.9">
+      <ellipse cx="1145" cy="213" rx="15" ry="36"/>
+      <ellipse cx="1145" cy="213" rx="15" ry="36" transform="rotate(90 1145 255)"/>
+      <ellipse cx="1145" cy="213" rx="15" ry="36" transform="rotate(180 1145 255)"/>
+      <ellipse cx="1145" cy="213" rx="15" ry="36" transform="rotate(270 1145 255)"/>
+    </g>
+    <circle cx="1145" cy="255" r="20" fill="#9aa3af" stroke="#6b7280" stroke-width="2"/>
+    <circle cx="1076" cy="186" r="5" fill="#263038"/>
+    <circle cx="1214" cy="186" r="5" fill="#263038"/>
+    <circle cx="1076" cy="324" r="5" fill="#263038"/>
+    <circle cx="1214" cy="324" r="5" fill="#263038"/>
+    <circle cx="1060" cy="220" r="5" fill="#d92626"/>
+    <circle cx="1060" cy="290" r="5" fill="#222222"/>
+    <text x="1145" y="360" text-anchor="middle" font-size="13" font-weight="700" fill="#374151">小型直流风扇</text>
+  </g>
+
+  <!-- ================= 电池组 ================= -->
+  <g>
+    <rect x="940" y="650" width="260" height="110" rx="10" fill="#263238" stroke="#111827" stroke-width="2"/>
+    <rect x="958" y="674" width="104" height="58" rx="14" fill="#0e7490" stroke="#0a4f63" stroke-width="1.5"/>
+    <rect x="1076" y="674" width="104" height="58" rx="14" fill="#0e7490" stroke="#0a4f63" stroke-width="1.5"/>
+    <rect x="1052" y="692" width="8" height="22" fill="#cbd5e1"/>
+    <rect x="1170" y="692" width="8" height="22" fill="#cbd5e1"/>
+    <text x="1008" y="707" text-anchor="middle" font-size="10" fill="#e0f2fe">18650</text>
+    <text x="1126" y="707" text-anchor="middle" font-size="10" fill="#e0f2fe">18650</text>
+    <text x="1070" y="752" text-anchor="middle" font-size="12" fill="#e5e7eb">电池组 7.4V（2×18650）</text>
+    <rect x="992" y="636" width="16" height="14" fill="#222222"/>
+    <rect x="1152" y="636" width="16" height="14" fill="#d92626"/>
+    <text x="984" y="648" text-anchor="end" font-size="18" font-weight="700" fill="#222222">−</text>
+    <text x="1176" y="648" font-size="18" font-weight="700" fill="#d92626">＋</text>
+  </g>
+
+  <!-- ================= 保护逻辑提示 ================= -->
+  <g>
+    <rect x="720" y="780" width="520" height="64" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="740" y="806" font-size="12" font-weight="700" fill="#92400e">⚠ 保护逻辑：检测到过流 / 过压时，ESP32 将 GPIO26 拉低，</text>
+    <text x="740" y="828" font-size="12" fill="#92400e">继电器断开 COM–NO 触点，立即切断风扇供电。</text>
+  </g>
+
+  <!-- ================= 图例 ================= -->
+  <g>
+    <rect x="60" y="640" width="620" height="130" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="78" y="664" font-size="13" font-weight="700" fill="#111827">图例</text>
+    <line x1="80" y1="688" x2="116" y2="688" stroke="#d92626" stroke-width="6" stroke-linecap="round"/>
+    <text class="cap" x="126" y="692">红：3.3V / 电池正极（粗线 = 大电流路径）</text>
+    <line x1="80" y1="712" x2="116" y2="712" stroke="#222222" stroke-width="4" stroke-linecap="round"/>
+    <text class="cap" x="126" y="716">黑：GND / 电池负极（共地）</text>
+    <line x1="80" y1="736" x2="116" y2="736" stroke="#e6b800" stroke-width="4" stroke-linecap="round"/>
+    <text class="cap" x="126" y="740">黄：SCL — GPIO22</text>
+    <line x1="370" y1="736" x2="406" y2="736" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+    <text class="cap" x="416" y="740">蓝：SDA — GPIO21</text>
+    <line x1="80" y1="760" x2="116" y2="760" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
+    <text class="cap" x="126" y="764">绿：GPIO26 → Relay IN（开关控制）</text>
+    <path d="M370,754 L384,760 L370,766 Z" fill="#d92626"/>
+    <text class="cap" x="416" y="764">电流方向</text>
+  </g>
+</svg>
