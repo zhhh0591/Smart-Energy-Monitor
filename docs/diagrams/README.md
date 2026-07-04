@@ -1,26 +1,26 @@
-# 接线图 / Wiring Diagrams
+# Wiring Diagrams
 
-ESP32 + INA219 直流电能监测项目的接线示意图（Fritzing 风格 SVG，可直接在浏览器或 GitHub 中查看）。
+Fritzing-style SVG wiring diagrams for the ESP32 + INA219 DC energy monitoring project. They render directly in any browser and on GitHub.
 
-| 文件 | 说明 |
+| File | Description |
 | --- | --- |
-| [`phase1-wiring.svg`](./phase1-wiring.svg) | Phase 1 · 基础测量：ESP32 + INA219 + 直流风扇 + 电池，负载电流串联流经 INA219（Vin+ → Vin−） |
-| [`phase2-dataflow.svg`](./phase2-dataflow.svg) | Phase 2 · 数据流示意（无新增硬件）：INA219 → ESP32 (WiFi/MQTT) → MQTT Broker → 网页仪表盘 |
-| [`phase4-wiring.svg`](./phase4-wiring.svg) | Phase 4 · 继电器控制与保护：在 Phase 1 基础上串入继电器（COM/NO），GPIO26 控制通断 |
+| [`phase1-wiring.svg`](./phase1-wiring.svg) | Phase 1 · Basic measurement: ESP32 + INA219 + DC fan + battery; load current flows in series through the INA219 (Vin+ → Vin−) |
+| [`phase2-dataflow.svg`](./phase2-dataflow.svg) | Phase 2 · Data flow (no new hardware): INA219 → ESP32 (WiFi/MQTT) → MQTT broker → web dashboard |
+| [`phase4-wiring.svg`](./phase4-wiring.svg) | Phase 4 · Relay control & protection: adds a relay (COM/NO) into the Phase 1 load path, switched by GPIO26 |
 
-## 引脚速查
+## Pin reference
 
-| 信号 | ESP32 | 对端 | 线色 |
+| Signal | ESP32 | Peer | Wire color |
 | --- | --- | --- | --- |
-| 电源 | 3V3 | INA219 VCC（Phase 4 同时供继电器 VCC） | 红 |
-| 地 | GND | INA219 GND / 继电器 GND / 电池−（共地） | 黑 |
-| I²C 时钟 | GPIO22 | INA219 SCL | 黄 |
-| I²C 数据 | GPIO21 | INA219 SDA | 蓝 |
-| 继电器控制（Phase 4） | GPIO26 | Relay IN | 绿 |
+| Power | 3V3 | INA219 VCC (also relay VCC in Phase 4) | Red |
+| Ground | GND | INA219 GND / relay GND / battery − (common ground) | Black |
+| I²C clock | GPIO22 | INA219 SCL | Yellow |
+| I²C data | GPIO21 | INA219 SDA | Blue |
+| Relay control (Phase 4) | GPIO26 | Relay IN | Green |
 
-**大电流路径（粗红/粗黑线）**
+**High-current path (thick red/black lines)**
 
-- Phase 1：电池+ → INA219 Vin+ → Vin− → 风扇红线 → 风扇黑线 → 电池−
-- Phase 4：电池+ → INA219 Vin+ → Vin− → 继电器 COM → NO → 风扇红线 → 风扇黑线 → 电池−
+- Phase 1: Battery+ → INA219 Vin+ → Vin− → fan red lead → fan black lead → Battery−
+- Phase 4: Battery+ → INA219 Vin+ → Vin− → relay COM → NO → fan red lead → fan black lead → Battery−
 
-Phase 2 与 Phase 3 为软件/数据流阶段，硬件接线与 Phase 1 相同。
+Phases 2 and 3 are software/data-flow stages; their hardware wiring is identical to Phase 1.
