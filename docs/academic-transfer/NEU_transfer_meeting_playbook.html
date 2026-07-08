@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>NEU BSEE Transfer Credit Playbook — Honghan Zheng</title>
+<style>
+  @page { size: letter; margin: 15mm 14mm 16mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Helvetica Neue", Arial, "WenQuanYi Zen Hei", sans-serif;
+    font-size: 9.6pt; line-height: 1.52; color: #1c1e21;
+  }
+  /* ---------- cover header ---------- */
+  .cover {
+    background: #c8102e; color: #fff; border-radius: 8px;
+    padding: 22px 26px 18px; margin-bottom: 14px;
+  }
+  .cover .kicker { font-size: 8.5pt; letter-spacing: 2.5px; text-transform: uppercase; opacity: .85; margin-bottom: 6px; }
+  .cover h1 { font-size: 19pt; line-height: 1.25; font-weight: 700; }
+  .cover .sub { font-size: 11pt; margin-top: 4px; font-weight: 400; opacity: .95; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0 26px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,.35); padding-top: 10px; }
+  .meta div { font-size: 8.6pt; padding: 2px 0; }
+  .meta b { display: block; font-size: 7.4pt; text-transform: uppercase; letter-spacing: 1px; opacity: .75; font-weight: 600; }
+
+  /* ---------- generic ---------- */
+  h2 {
+    font-size: 13pt; color: #c8102e; margin: 22px 0 8px;
+    padding-bottom: 4px; border-bottom: 2.5px solid #c8102e;
+    break-after: avoid;
+  }
+  h2 .en { color: #8a8d93; font-size: 9.5pt; font-weight: 600; margin-left: 8px; }
+  h3 { font-size: 10.8pt; margin: 14px 0 6px; break-after: avoid; }
+  h3 .en { color: #8a8d93; font-size: 8.8pt; font-weight: 600; }
+  p { margin: 5px 0; }
+  ul, ol { margin: 5px 0 5px 18px; }
+  li { margin: 3px 0; }
+  .small { font-size: 8.4pt; color: #5f6368; }
+  .avoid { break-inside: avoid; }
+
+  /* badges */
+  .badge { display: inline-block; font-size: 7.6pt; font-weight: 700; padding: 1.5px 8px; border-radius: 10px; vertical-align: 1px; letter-spacing: .5px; }
+  .p1 { background: #c8102e; color: #fff; }
+  .p2 { background: #e8890c; color: #fff; }
+  .p3 { background: #6b7280; color: #fff; }
+  .flag { background: #fdecea; color: #b3261e; border: 1px solid #f5c6c0; }
+
+  /* tables */
+  table { width: 100%; border-collapse: collapse; margin: 7px 0; font-size: 8.9pt; }
+  th { background: #21242b; color: #fff; text-align: left; padding: 5px 8px; font-size: 8.3pt; letter-spacing: .3px; }
+  td { border: 1px solid #d9dbe0; padding: 5px 8px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f6f7f9; }
+  table.clean th { background: #eceef1; color: #1c1e21; border: 1px solid #d9dbe0; }
+
+  /* cards */
+  .card {
+    border: 1px solid #d9dbe0; border-left: 4px solid #c8102e; border-radius: 6px;
+    padding: 10px 13px; margin: 9px 0; break-inside: avoid; background: #fff;
+  }
+  .card h4 { font-size: 10.3pt; margin-bottom: 5px; }
+  .card h4 .en { color: #8a8d93; font-size: 8.6pt; font-weight: 600; }
+  .row { display: flex; gap: 10px; margin: 4px 0; }
+  .lbl { flex: 0 0 78px; font-size: 8pt; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; padding-top: 1.5px; }
+  .val { flex: 1; }
+
+  /* ladder */
+  .ladder { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0; }
+  .step { background: #f1f3f5; border: 1px solid #d9dbe0; border-radius: 5px; padding: 3px 8px; font-size: 8.3pt; }
+  .step b { color: #c8102e; }
+
+  /* say-this quote */
+  .say {
+    background: #f5f8ff; border-left: 3px solid #3b5bcc; border-radius: 0 5px 5px 0;
+    padding: 6px 10px; margin: 5px 0; font-size: 8.9pt;
+  }
+  .say b { color: #3b5bcc; font-size: 7.8pt; text-transform: uppercase; letter-spacing: .8px; display: block; margin-bottom: 2px; }
+
+  /* callouts */
+  .warn {
+    background: #fdecea; border: 1px solid #f5c6c0; border-radius: 6px;
+    padding: 9px 13px; margin: 9px 0; break-inside: avoid;
+  }
+  .warn .t { font-weight: 700; color: #b3261e; }
+  .tip {
+    background: #eef7ee; border: 1px solid #cfe6cf; border-radius: 6px;
+    padding: 9px 13px; margin: 9px 0; break-inside: avoid;
+  }
+  .tip .t { font-weight: 700; color: #1e6b30; }
+
+  /* checklist */
+  .chk { list-style: none; margin-left: 0; }
+  .chk li { padding: 4px 0 4px 26px; position: relative; border-bottom: 1px dotted #d9dbe0; }
+  .chk li::before {
+    content: ""; position: absolute; left: 2px; top: 6px; width: 12px; height: 12px;
+    border: 1.6px solid #9aa0a6; border-radius: 3px;
+  }
+  .ans { color: #9aa0a6; font-size: 8pt; display: block; margin-top: 2px; }
+
+  /* email blocks */
+  .email {
+    border: 1px solid #d9dbe0; border-radius: 6px; margin: 9px 0; break-inside: avoid;
+    font-size: 8.9pt; overflow: hidden;
+  }
+  .email .subject { background: #eceef1; padding: 6px 12px; font-weight: 700; border-bottom: 1px solid #d9dbe0; }
+  .email .body { padding: 9px 13px; white-space: pre-wrap; font-family: "Helvetica Neue", Arial, "WenQuanYi Zen Hei", sans-serif; }
+
+  .pagebreak { break-before: page; }
+  .footer-note { margin-top: 18px; padding-top: 8px; border-top: 1px solid #d9dbe0; font-size: 8pt; color: #8a8d93; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="kicker">Confidential · Advising Meeting Playbook · 会议专用</div>
+  <h1>Northeastern BSEE 转学分最大化作战手册</h1>
+  <div class="sub">Transfer Credit Maximization &amp; Registration Playbook — COE Advising Meeting</div>
+  <div class="meta">
+    <div><b>Student / 学生</b>Honghan Zheng</div>
+    <div><b>NUID</b>003972364</div>
+    <div><b>Program / 项目</b>Fall 2026 BSEE Transfer(转自 University at Buffalo)</div>
+    <div><b>Advisor / 顾问</b>Megan Doe · COE Advising</div>
+    <div><b>Meeting / 会议</b>45 min · Virtual</div>
+    <div><b>Version / 版本</b>v2 · July 2026</div>
+  </div>
+</div>
+
+<!-- ================= 1. EXECUTIVE SUMMARY ================= -->
+<h2>1. 执行摘要 <span class="en">Executive Summary</span></h2>
+<p><b>局面一句话:</b>你的问题不是"不会选课",而是转学分流程三处断链——① 转出学校可能被录错(University at Buffalo 被写成 SUNY Buffalo State);② 多门核心课停在 NO RULE / NO TRANSFER / partial;③ prerequisite 系统因此不认你的背景,把 Fall 注册整个卡死。</p>
+<p><b>这次会议要带走三样东西:</b></p>
+<ol>
+  <li><b>一份能立刻执行的 Fall 课表</b> —— 含 override / manual registration 承诺,以及保底 backup 课(保住全职学分)。</li>
+  <li><b>一条学分翻盘路径</b> —— 更正 source institution → 全部受影响课程重评;每门争议课都有 Plan A→D 退让阶梯,绝不接受"0 或全部"。</li>
+  <li><b>书面确认 + 责任人 + 期限</b> —— 每个承诺落到"谁做、何时完成",会后 24 小时内邮件复述锁定,再无后患。</li>
+</ol>
+<div class="warn">
+  <span class="t">⚠ 全场最重要的一件事:</span>先解决 <b>Buffalo State 录错</b>。University at Buffalo(UB)和 SUNY Buffalo State 是两所完全不同的学校。如果你的课程被放进了错误学校的等价规则库里去匹配,那么所有 NO RULE / NO TRANSFER 结论都建立在错误数据上——更正并重评可能<b>一次性翻盘多门课</b>。这是行政记录错误,不是学术判断,学校有义务更正。旧版文件把它排在第 8 位,这是本次最大的策略修正:它是根因,必须第一个谈。
+</div>
+
+<!-- ================= 2. UNREASONABLE POINTS ================= -->
+<h2>2. 不合理之处清单 <span class="en">What Is Wrong — Your Ammunition</span></h2>
+<p>下面第一张表是<b>学校评估里站不住脚的地方</b>(会议上的谈判弹药);第二张表是<b>旧版准备文件的漏洞</b>(本版已全部修复,防止再踩坑)。</p>
+
+<h3>2.1 学校评估中的不合理 <span class="en">Problems in NEU's evaluation</span></h3>
+<table>
+  <tr><th style="width:26px">#</th><th style="width:190px">问题 / Issue</th><th>为什么不合理 / Why it's wrong</th><th style="width:170px">对应诉求 / The ask</th></tr>
+  <tr>
+    <td>1</td><td><span class="badge p1">P1</span> 转出学校录错<br><span class="small">UB ≠ SUNY Buffalo State</span></td>
+    <td>两所不同的学校,课程编号体系、等价规则库完全不同。按错误学校匹配,所有评估结论都不可信。这是<b>数据录入错误</b>,不属于"不能更改的 faculty evaluation"。</td>
+    <td>更正 source institution;所有受影响课程按 UB 等价规则<b>重新处理</b>;确认负责人与完成时间。</td>
+  </tr>
+  <tr>
+    <td>2</td><td><span class="badge p1">P1</span> NO RULE 被当成"转不了"<br><span class="small">MTH 241 / MTH 306</span></td>
+    <td>NO RULE 的真实含义是"数据库里<b>还没有</b>这门课的对应规则"= <b>从未被评估</b>,≠ 评估后被拒。Calculus 3 和微分方程是全美工科最标准化的课程,几乎所有 ABET 学校互认。</td>
+    <td>提交 syllabus 走 faculty evaluation 建规则;评估期间先给 prerequisite override,不能让行政排队卡注册。</td>
+  </tr>
+  <tr>
+    <td>3</td><td><span class="badge p1">P1</span> EE 178(4 学分+lab)给 0 学分<br><span class="small">NO TRANSFER</span></td>
+    <td>数电原理课(逻辑门、布尔代数、K-map、组合/时序逻辑、FSM、PLD、存储器,含动手 lab)内容与 EECE 2322/2323 高度重合。即使不给直接等价,一门 ABET 工科院校的 4 学分实验课<b>完全归零</b>缺乏学术依据——最差也应折算 elective。</td>
+    <td>按 EECE 2322/2323 重评;不行则 partial substitution;底线 EECE / general elective。索要 petition 渠道。</td>
+  </tr>
+  <tr>
+    <td>4</td><td><span class="badge p1">P1</span> EE 202 → EECE 2150 只给 3 学分,却不说 requirement 是否满足</td>
+    <td>Posted ≠ applied。若因 NEU 版本多出 lab/MATLAB 部分而算 partial,合理做法是<b>只补缺失组件</b>,而不是让学生重修整门课、作废已获学分。含糊状态还会连锁卡住所有以 EECE 2150 为先修的课。</td>
+    <td>书面确认 requirement 状态;若 partial,问"只补 lab/组件"的最小方案;同时给后续课 override。</td>
+  </tr>
+  <tr>
+    <td>5</td><td><span class="badge flag">红旗</span> 物理可能映射错序列<br><span class="small">PHYS 1145–1148</span></td>
+    <td>在 NEU 编号体系中,PHYS 1145/1146/1147/1148 通常是 <b>Physics for Life Sciences</b>(生命科学物理)序列;BSEE 一般要求 <b>PHYS 1151/1153/1155/1157 工程物理</b>(calculus-based)。若你在 UB 修的是 calculus-based 的工科物理(如 PHY 107/108),被映射到生科序列属于<b>降级错配</b>——学分看着在,毕业要求却可能不满足。<span class="small">※编号以 catalog 为准,当场核对。</span></td>
+    <td>核对映射;若 UB 课程为 calculus-based,要求改评为工程物理序列;若维持原判,问差在哪、如何补。</td>
+  </tr>
+  <tr>
+    <td>6</td><td><span class="badge p2">P2</span> EAS 240(工科限定 C 语言课)被转成通用 CS 学分</td>
+    <td>课程是 Introduction to Programming for Engineers(限工科生):C 语言、指针、数据结构、算法、labs、project。转成 generic CS credit 等于白丢一个计算基础 requirement 的位置。</td>
+    <td>substitution 抵 EECE 2140;不行则至少用于 prerequisite override,并确认能否与后续课并修。</td>
+  </tr>
+  <tr>
+    <td>7</td><td><span class="badge p2">P2</span> Admissions 一句"改不了 faculty evaluation"就把学生打发了</td>
+    <td>这只说明 <b>Admissions 无权限</b>,不代表无渠道。COE 内部另有 degree substitution、petition、degree audit exception、prerequisite override——这些都不归 Admissions 管,也不需要"推翻" faculty evaluation。</td>
+    <td>让 advisor 明确列出 COE 内部每条渠道的流程、表格、负责人、时限。</td>
+  </tr>
+</table>
+
+<h3 class="pagebreak">2.2 旧版准备文件的漏洞(本版已修复) <span class="en">Gaps in the old brief — fixed in this version</span></h3>
+<table>
+  <tr><th style="width:26px">#</th><th style="width:215px">旧版漏洞 / Gap</th><th>后果与修复 / Consequence &amp; fix</th></tr>
+  <tr><td>1</td><td>根因(Buffalo State 录错)被排在第 8 位</td><td>先逐课争论、最后才提根因 = 浪费 45 分钟里最值钱的时间。<b>修复:</b>提升为第 1 优先级,开场白直接点名。</td></tr>
+  <tr><td>2</td><td>没解释 NO RULE ≠ 被拒绝</td><td>谈判姿态从"请求重审"弱化成"求情"。<b>修复:</b>明确表述"这些课从未被评估,我是在申请首次评估+临时 override"。</td></tr>
+  <tr><td>3</td><td>物理生科序列错配只写了"确认一下"</td><td>可能默默吞下"学分在册但毕业要求不满足"的暗亏。<b>修复:</b>升级为红旗项,给出重评话术。</td></tr>
+  <tr><td>4</td><td>MTH 306 → MATH 2341 的内容缺口无预案</td><td>NEU MATH 2341 通常<b>含线性代数</b>,MTH 306 只有 ODE——advisor 可据此直接拒绝。<b>修复:</b>预先准备"合并 substitution / 补 bridge / 部分认定"三套方案(见 §5)。</td></tr>
+  <tr><td>5</td><td>没确认 UB <b>最终官方成绩单</b>是否寄达</td><td>很多"pending"的真实原因就是最终成绩单没到——争论半天,其实是文件没寄。<b>修复:</b>列入必问清单 Q2。</td></tr>
+  <tr><td>6</td><td>没查 registration holds</td><td>麻省疫苗记录(法律要求)、健康保险 waiver、orientation hold,任何一个都能单独锁死注册——override 批了也没用。<b>修复:</b>列入必问清单 Q3 与 §9 checklist。</td></tr>
+  <tr><td>7</td><td>只盯着"38 学分已 posted",没问几分真正 applied</td><td>Posted 是入账,applied 才是抵毕业要求。<b>修复:</b>要求当场跑 degree audit,逐项看 applied 状态。</td></tr>
+  <tr><td>8</td><td>没提 NUpath 属性 petition</td><td>转学分默认往往<b>不带 NUpath 属性</b>——人文/社科/写作课白白浪费。<b>修复:</b>问清 NUpath petition 入口,把已转课程挂上通识属性,等于凭空多清一批毕业要求。</td></tr>
+  <tr><td>9</td><td>没问转学分上限 / residency 要求 / class standing</td><td>不知道上限就无法取舍;class standing 影响选课优先级、宿舍和奖学金。<b>修复:</b>列入 §7 流程问题。</td></tr>
+  <tr><td>10</td><td>问题列了 10 组,但没有"谁负责、何时完成"</td><td>会开完 = 一堆"应该可以",没人执行。<b>修复:</b>§8 跟进闭环表,每项落实 owner + deadline,24h 内邮件锁定。</td></tr>
+  <tr><td>11</td><td>(如适用)国际生身份风险未提</td><td>若持 F-1:注册不满全职学分直接构成身份风险。这既是真实的"后患",也是要求<b>加急处理</b>的最正当理由。<b>修复:</b>§9 专列 SEVIS/I-20/OGS checklist。</td></tr>
+  <tr><td>12</td><td>排版:中英混排无层次、动作栏复制粘贴重复、45 分钟没有时间分配</td><td>会议现场翻不到重点。<b>修复:</b>本版含时间表(§3)、单页问题清单(§6)、逐课卡片(§5)。</td></tr>
+</table>
+
+<!-- ================= 3. AGENDA ================= -->
+<h2>3. 45 分钟会议时间表 <span class="en">Timeboxed Agenda</span></h2>
+<table class="clean">
+  <tr><th style="width:80px">时间</th><th style="width:190px">议题</th><th>目标产出</th></tr>
+  <tr><td>0–3 min</td><td>开场白(§4)</td><td>定基调:今天要带走三样东西;直接点名 Buffalo State 根因。</td></tr>
+  <tr><td>3–13 min</td><td><span class="badge p1">P1</span> Fall 注册解锁</td><td>现在就能注册的课;哪些课给 override / manual registration;backup 课保全职。</td></tr>
+  <tr><td>13–18 min</td><td><span class="badge p1">P1</span> 根因三连查</td><td>① source institution 更正+重评;② 最终成绩单是否寄达;③ 账户上有无 holds。</td></tr>
+  <tr><td>18–33 min</td><td><span class="badge p1">P1</span> 逐课争取(§5)</td><td>顺序:数学 → EE 202 → EAS 240 → EE 178 → 理化。每门课拿到明确状态或下一步。</td></tr>
+  <tr><td>33–40 min</td><td><span class="badge p2">P2</span> 流程通道(§7)</td><td>petition / substitution / audit exception 的流程、表格、负责人、截止时间;NUpath petition;学分上限。</td></tr>
+  <tr><td>40–45 min</td><td>复述 + 锁定</td><td>逐条复述结论,请 advisor 记入 Navigate notes;约定书面 follow-up。</td></tr>
+</table>
+<div class="tip">
+  <span class="t">✔ 现场战术:</span>每个"应该可以"都追问三连:<b>"这由谁执行?我需要做什么?多久能完成?"</b>拿到答案立刻在 §6 清单上记下。凡涉及"某门课满足某 requirement"或"承诺给 override"的口头结论,必须请对方写进 Navigate notes 或回邮件确认——口头承诺过完暑假就不存在了。
+</div>
+
+<!-- ================= 4. OPENING ================= -->
+<h2>4. 30 秒开场白 <span class="en">Opening Script</span></h2>
+<div class="say"><b>English — say this</b>Thank you for meeting me. Before we go course by course, I need to flag one structural issue: my University at Buffalo courses may have been processed under the wrong institution — SUNY Buffalo State, which is a different school — so several "no rule" and "no transfer" results may be based on wrong data. Today I'd like to leave with three things: first, a Fall schedule I can register for right now, with overrides or manual registration where the system is blocking me; second, a correction-and-re-evaluation path for my transfer credits; and third, for anything that can't be resolved today, the exact petition process, who owns it, and the timeline.</div>
+<p class="small">中文对照:先指出结构性问题——转出学校可能录错,很多评估结论建立在错误数据上;今天要带走三样:①立即可执行的 Fall 课表(含 override);②学分更正+重评路径;③解决不了的,要拿到 petition 流程、负责人、时间线。</p>
+
+<!-- ================= 5. COURSE CARDS ================= -->
+<h2 class="pagebreak">5. 逐课最大化矩阵 <span class="en">Course-by-Course Maximization</span></h2>
+<p>每门课都有 <b>Plan A → D 退让阶梯</b>:等价 → 替代(substitution)→ elective 学分 → prerequisite override。谈判原则:<b>绝不接受"0 或全部"</b>——任何一门被认可的课,最差也能填 general elective 槽、减少总剩余学分。</p>
+
+<div class="card">
+  <h4>5.1 MTH 241(Calculus 3)→ MATH 2321 <span class="badge p1">P1</span> <span class="en">现状:NO RULE(从未评估)</span></h4>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> 直接等价 MATH 2321</span><span class="step"><b>B</b> 评估期间先给后续课 prereq override</span><span class="step"><b>C</b> 部分认定+说明差什么</span></div></div></div>
+  <div class="row"><div class="lbl">证据</div><div class="val">标准多元微积分(偏导、多重积分、向量微积分),全美工科通认;syllabus 已备。</div></div>
+  <div class="say"><b>Say this</b>MTH 241 is a standard multivariable calculus course. "NO RULE" means it was never evaluated, not that it was denied — could we submit the syllabus for faculty evaluation, and in the meantime use it for prerequisite overrides so registration isn't blocked by the queue?</div>
+  <div class="row"><div class="lbl">若被拒</div><div class="val">追问缺哪个 topic;提供教材目录+作业;问 challenge exam / placement 验证渠道。</div></div>
+</div>
+
+<div class="card">
+  <h4>5.2 MTH 306(Differential Equations)→ MATH 2341 <span class="badge p1">P1</span> <span class="en">现状:NO RULE · ⚠ 预判内容缺口</span></h4>
+  <div class="row"><div class="lbl">预判</div><div class="val">NEU MATH 2341 通常是 <b>DiffEq + Linear Algebra for Engineering</b> 合并课;MTH 306 只覆盖 ODE。对方很可能以"缺线代"拒绝——<b>提前抢答,别等对方开口</b>。</div></div>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> 若在 UB 另修过线代(如 MTH 309):两课合并 substitution 抵 2341</span><span class="step"><b>B</b> MTH 306 抵 ODE 部分,问最小 bridge 方案</span><span class="step"><b>C</b> 用于后续课 prereq override</span><span class="step"><b>D</b> 重修 2341,但 MTH 306 学分转 general elective 保留</span></div></div></div>
+  <div class="say"><b>Say this</b>I know MATH 2341 combines differential equations with linear algebra. MTH 306 covers the ODE portion [ + I also completed a linear algebra course — can the two together substitute? ]. If not, what is the smallest bridge — rather than retaking content I've already passed?</div>
+</div>
+
+<div class="card">
+  <h4>5.3 EE 202(Circuit Analysis)→ EECE 2150 <span class="badge p1">P1</span> <span class="en">现状:已转,但只有 3 学分</span></h4>
+  <div class="row"><div class="lbl">关键点</div><div class="val">NEU EECE 2150 学分更高(含 lab / MATLAB / project;具体以 catalog 为准)。核心问题不是学分数,而是 <b>degree audit 是否把 EECE 2150 requirement 标记为满足</b>——它是一串后续 EECE 课的先修,含糊状态会连锁卡课。</div></div>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> requirement 判定为满足(书面确认)</span><span class="step"><b>B</b> partial → 只补缺失的 lab/组件(问有无 1–2 学分方案)</span><span class="step"><b>C</b> 学分差额计入 general elective + 后续课 override</span><span class="step"><b>✗</b> 拒绝默认重修整门课</span></div></div></div>
+  <div class="say"><b>Say this</b>Does EE 202 → EECE 2150 clear the requirement in my degree audit — yes or no? If it's partial because of the lab or MATLAB component, is there a way to complete only the missing component instead of retaking the entire course? And can I register now for courses that list EECE 2150 as a prerequisite?</div>
+</div>
+
+<div class="card">
+  <h4>5.4 EAS 240(Intro to Programming for Engineers)→ EECE 2140 <span class="badge p2">P2</span> <span class="en">现状:被转成通用 CS 学分</span></h4>
+  <div class="row"><div class="lbl">证据</div><div class="val">3 学分、<b>限工程专业</b>的 C 语言课:过程式编程、函数、指针、文件 I/O、数据结构、算法、labs + project,面向工程/科学计算。这不是通识编程课。</div></div>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> substitution 抵 EECE 2140</span><span class="step"><b>B</b> 用于后续 EECE 课 prereq override</span><span class="step"><b>C</b> 保留 CS 学分转 general elective;问 2140 能否与 2160 等并修,不拖进度</span></div></div></div>
+  <div class="say"><b>Say this</b>EAS 240 was engineering-majors-only C programming with labs and a project. Can it substitute for EECE 2140? If not, can it at least support prerequisite overrides — and could I take EECE 2140 concurrently with later courses so my progression isn't delayed?</div>
+</div>
+
+<div class="card">
+  <h4>5.5 EE 178(Digital Principles, 4 学分 + lab)→ EECE 2322/2323 <span class="badge p1">P1</span> <span class="en">现状:NO TRANSFER(0 学分)</span></h4>
+  <div class="row"><div class="lbl">证据</div><div class="val">进制系统、逻辑门、布尔代数、Karnaugh maps、组合逻辑、数字运算、时序逻辑、有限状态机、可编程逻辑器件、存储器,<b>含动手实验</b>——与 EECE 2322/2323 内容高度重合。</div></div>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> 重评为 EECE 2322 + 2323</span><span class="step"><b>B</b> partial:抵 2322 讲课部分,补 2323 lab</span><span class="step"><b>C</b> EECE elective 学分</span><span class="step"><b>D</b> general elective(底线,拒绝 0 学分)</span></div></div></div>
+  <div class="say"><b>Say this</b>A four-credit digital design course with a hands-on lab receiving zero credit doesn't seem to reflect the content. If it can't map to EECE 2322/2323, can it be reviewed for partial substitution or at least EECE elective credit? And what is the formal petition path if the evaluation stands? I'd also note this course may have been evaluated under the wrong source institution.</div>
+</div>
+
+<div class="card">
+  <h4>5.6 CHEM 1211/1212 + PHYS 1145–1148 <span class="badge flag">红旗</span> <span class="en">现状:已 posted,但可能只算 elective</span></h4>
+  <div class="row"><div class="lbl">化学</div><div class="val">确认 CHEM 1211/1212 是否满足 BSEE 化学要求(BSEE 计划常列工程化学编号);若只算 elective,问 substitution。</div></div>
+  <div class="row"><div class="lbl">物理⚠</div><div class="val">PHYS 1145–1148 在 NEU 编号体系中通常是<b>生命科学物理</b>序列;BSEE 一般要求 <b>PHYS 1151/1153/1155/1157 工程物理</b>。若你在 UB 修的是 calculus-based 工科物理(如 PHY 107/108),这是映射错误,应要求改评。<span class="small">※当场对照 catalog 核实编号。</span></div></div>
+  <div class="say"><b>Say this</b>My physics posted as PHYS 1145 through 1148, which I believe is the life-sciences sequence — but my UB physics was calculus-based physics for engineers. Can it be re-mapped to the engineering physics sequence? And do my chemistry credits satisfy the BSEE science requirement, or only count as electives? If anything falls short, exactly what should I take in Fall?</div>
+</div>
+
+<div class="card">
+  <h4>5.7 ENCP 2000(Co-op 入门课) <span class="badge p1">P1</span> <span class="en">现状:被 field-of-study / prerequisite restriction 拦截</span></h4>
+  <div class="row"><div class="lbl">矛盾点</div><div class="val">Student Profile 已明确显示 BSEE Electrical Engineering in COE——系统拦截与在册身份自相矛盾,大概率是 transfer 数据未同步,不是真不符合资格。</div></div>
+  <div class="row"><div class="lbl">阶梯</div><div class="val"><div class="ladder"><span class="step"><b>A</b> 当场 manual registration / override</span><span class="step"><b>B</b> 确认正确修读学期 + 转学生 co-op 时间线</span></div></div></div>
+  <div class="say"><b>Say this</b>My profile shows I'm a BSEE student in COE, yet ENCP 2000 blocks me on a field-of-study restriction — that looks like a data-sync issue, not ineligibility. Can you register me manually or clear the restriction? And as a transfer student, when is my first co-op cycle, so we sequence this correctly?</div>
+</div>
+
+<div class="card">
+  <h4>5.8 其余 UB 学分:写作 / 人文 / 社科 / 其他 <span class="badge p2">P2</span> <span class="en">最容易被忽视的"白捡"学分</span></h4>
+  <div class="row"><div class="lbl">要点</div><div class="val">① 英文写作课是否抵 <b>ENGW 1111</b>(First-Year Writing);② 已转的人文/社科课默认往往<b>不带 NUpath 属性</b>——通过 NUpath petition 挂上属性,等于凭空多清一批通识要求;③ 所有 NO RULE 的杂课全部提交评估——任何被认的课至少填 general elective 槽。</div></div>
+  <div class="say"><b>Say this</b>Beyond engineering: does my English composition satisfy ENGW 1111? Which of my transferred courses carry NUpath attributes, and what's the petition process to attach attributes to ones that don't? I'd like every remaining "no rule" course submitted for evaluation — even general elective credit reduces my remaining hours.</div>
+</div>
+
+<!-- ================= 6. QUESTION CHECKLIST ================= -->
+<h2 class="pagebreak">6. 会议必问清单(打印这页) <span class="en">One-Page Question Checklist</span></h2>
+<p class="small">按顺序问;拿到答案当场写在横线上,并记下"谁负责 / 何时完成"。</p>
+<ul class="chk">
+  <li><b>Q1 · 根因</b> — 我的转出学校在系统里是否被正确记录为 University at Buffalo?如果录成了 Buffalo State,谁来更正、受影响课程何时按 UB 规则重评?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿ 负责人/期限:＿＿＿＿＿＿＿</span></li>
+  <li><b>Q2 · 文件</b> — Registrar 是否已收到我 UB 的<b>最终官方成绩单</b>(含最后一学期成绩)?pending 是否与此有关?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q3 · Holds</b> — 我账户上现在有没有任何 hold(疫苗记录 / 保险 waiver / orientation / advising)会锁注册?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q4 · 课表</b> — 基于现状,我<b>今天</b>就该注册哪些 Fall 课程?哪些课您可以 manual register 或申请 override?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q5 · ENCP 2000</b> — 能否当场解除限制或手动注册?转学生的 co-op 时间线是什么?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q6 · 数学</b> — MTH 241 → MATH 2321、MTH 306 → MATH 2341 的评估路径和时限?评估期间能否先给 prereq override?2341 的线代缺口怎么补最小?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q7 · EECE 2150</b> — EE 202 是否满足 requirement?若 partial,能否只补缺失组件?能否注册以它为先修的课?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q8 · EE 178</b> — 能否按 EECE 2322/2323 重评?不行的话 partial / EECE elective / general elective 逐级问;petition 流程是什么?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q9 · EAS 240</b> — 能否 substitution 抵 EECE 2140?不行能否用于 override + 并修?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q10 · 理化</b> — 化学/物理学分满足 BSEE 要求吗?物理是否被错映射到生科序列?需要 Fall 补什么?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q11 · 全局</b> — 38 学分里有多少<b>真正 applied</b> 到 BSEE?能否当场跑一遍 degree audit?转学分上限/residency 要求?我的 class standing 是什么?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+  <li><b>Q12 · 兜底</b> — 若关键技术课最终没解锁:哪些 backup 课(general elective / NUpath / ENGW 1111)保证我全职且不浪费学分?petition 的截止日期是哪天?<span class="ans">答:＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</span></li>
+</ul>
+
+<!-- ================= 7. PROCESS ================= -->
+<h2>7. 流程与系统问题 <span class="en">Process &amp; System Items</span></h2>
+<table>
+  <tr><th style="width:185px">事项</th><th>要拿到的答案</th></tr>
+  <tr><td>Source institution 更正</td><td>由谁改(Registrar / Transfer Credit Office)、多久生效、重评是否自动触发还是需要我逐课申请。</td></tr>
+  <tr><td>Degree audit 重跑</td><td>更正与新评估录入后,当场或限期重跑 audit,并给我一份可存档的副本。</td></tr>
+  <tr><td>Petition / substitution 通道</td><td>表格名称、提交入口、审批人(department vs COE)、平均周期、<b>截止日期</b>。</td></tr>
+  <tr><td>Prerequisite override 机制</td><td>advisor 能直接给,还是要 department 批;每门被卡的课分别走哪条。</td></tr>
+  <tr><td>NUpath attribute petition</td><td>入口和所需材料;哪些已转课程可以挂属性。</td></tr>
+  <tr><td>转学分上限 / residency</td><td>最多能带多少学分进 BSEE;必须在 NEU 修满多少;避免为"用不上的学分"白费力气。</td></tr>
+  <tr><td>Class standing</td><td>按 applied 学分我算大几;影响选课优先级、宿舍、奖学金的地方逐一确认。</td></tr>
+</table>
+
+<!-- ================= 8. TRACKER ================= -->
+<h2>8. 会后跟进闭环表 <span class="en">Follow-Through Tracker</span></h2>
+<p class="small">会议一结束就填;每项有 owner 和 deadline 才算闭环。24 小时内把整张表写进 follow-up email(模板 §10.3)。</p>
+<table class="clean">
+  <tr><th style="width:30%">事项 Item</th><th style="width:18%">负责人 Owner</th><th style="width:26%">承诺动作 Promised action</th><th style="width:14%">期限 Deadline</th><th style="width:12%">完成 Done</th></tr>
+  <tr><td>Source institution 更正 + 重评</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>最终成绩单确认</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Holds 清零</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Fall 课表 + overrides</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>ENCP 2000</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>MTH 241 / MTH 306 评估</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>EECE 2150 状态判定</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>EE 178 重评 / petition</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>EAS 240 substitution</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>理化 requirement 判定</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>NUpath petitions</td><td></td><td></td><td></td><td></td></tr>
+  <tr><td>Degree audit 重跑 + 存档</td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<!-- ================= 9. NO-REGRET CHECKLIST ================= -->
+<h2 class="pagebreak">9. 顺滑转校 · 再无后患清单 <span class="en">Clean-Transition Checklist</span></h2>
+
+<h3>9.1 学术存档 <span class="en">Academic paper trail</span></h3>
+<ul class="chk">
+  <li>UB <b>最终官方成绩单</b>(含最后学期成绩)确认寄达 NEU Registrar,并保留寄送凭证。</li>
+  <li>所有争议课程的 <b>syllabus、教材目录、作业/项目样本</b>整理成 PDF 永久存档——petition、毕业审核、将来申研都可能再用。</li>
+  <li>每次口头承诺,<b>24 小时内</b>发确认邮件("Per our conversation, my understanding is…"),把回复存档。</li>
+  <li>每轮学分变动后重跑 degree audit 并<b>截图存档</b>,形成时间线证据。</li>
+  <li>所有与 Admissions / Registrar / Advising 的往来邮件单独建文件夹保存,直到毕业。</li>
+</ul>
+
+<h3>9.2 行政到位 <span class="en">Administrative onboarding</span></h3>
+<ul class="chk">
+  <li><b>疫苗/免疫记录</b>提交(麻省法律要求;此 hold 会直接锁注册)。</li>
+  <li><b>健康保险</b>:waiver(若已有合规保险)或购买学校保险,注意截止日。</li>
+  <li>Transfer orientation 注册;学生证办理;学费账单与 financial aid / 奖学金到账核对(转学分与 class standing 变动是否影响奖学金,发邮件确认)。</li>
+  <li>宿舍/租房、选课系统(Banner)和 Navigate 的登录与通知设置。</li>
+</ul>
+
+<h3>9.3 身份与 Co-op(如适用) <span class="en">Status &amp; co-op</span></h3>
+<ul class="chk">
+  <li><b>若持 F-1</b>:UB 端 SEVIS transfer-out 日期与 NEU I-20 签发确认;开学后到 OGS 报到。<b>全职学分(本科通常 12+)是身份底线</b>——若技术课被卡,先用 backup 课保全职;这也是要求加急 override 的正当理由,会议上可以直说。</li>
+  <li>转学生第一次 co-op 的最早学期、ENCP 2000 的正确修读时点,与学位进度对齐。</li>
+</ul>
+
+<div class="tip"><span class="t">✔ "再无后患"的判定标准:</span>① Fall 全职课表已注册成功;② 每门争议课都有<i>书面</i>状态(满足 / partial+补法 / petition 编号);③ 跟进表(§8)每一行都有 owner 和 deadline;④ 所有 holds 清零;⑤ 关键邮件与 audit 截图全部存档。五条全满足,才算真正落地。</div>
+
+<!-- ================= 10. EMAILS ================= -->
+<h2>10. 邮件模板 <span class="en">Email Templates</span></h2>
+
+<h3>10.1 会前发给 Advisor <span class="en">Pre-meeting agenda email</span></h3>
+<div class="email">
+  <div class="subject">Subject: Agenda for Our Advising Appointment — Registration Blocks &amp; Transfer Credit (Honghan Zheng, NUID 003972364)</div>
+  <div class="body">Hi Megan,
+
+Thank you for scheduling our appointment. To make the best use of our 45 minutes, here is what I hope to cover, in priority order:
+
+1. Possible source-institution error: my University at Buffalo courses may be recorded under "SUNY Buffalo State," a different institution. If so, several evaluations may need reprocessing.
+2. Fall registration: I am currently blocked (e.g., ENCP 2000) by prerequisite/field-of-study restrictions. I would like a workable Fall schedule and, where appropriate, overrides or manual registration before seats fill.
+3. Course evaluations: MTH 241 → MATH 2321 and MTH 306 → MATH 2341 (currently NO RULE); EE 202 → EECE 2150 (posted at 3 credits — is the requirement satisfied?); EE 178 Digital Principles (currently NO TRANSFER); EAS 240 (engineering C programming, currently generic CS credit); and whether my chemistry/physics credits satisfy BSEE science requirements.
+4. Process: petition/substitution paths, NUpath attribute petitions, and confirmation that my final official UB transcript has been received and no holds are on my account.
+
+I have syllabi for all disputed courses and can share them in advance if helpful.
+
+Thank you,
+Honghan Zheng · NUID 003972364</div>
+</div>
+
+<h3>10.2 给 Registrar / Transfer Credit:更正转出学校(加急) <span class="en">Source-institution correction</span></h3>
+<div class="email">
+  <div class="subject">Subject: Urgent — Incorrect Source Institution on Transfer Record (University at Buffalo, not Buffalo State) — Honghan Zheng, NUID 003972364</div>
+  <div class="body">Hello,
+
+I believe my transfer record contains a source-institution error. My courses appear to be listed under SUNY Buffalo State University; however, I attended the University at Buffalo (UB), The State University of New York — a different institution with its own course numbering and equivalencies.
+
+Because equivalency matching depends on the source institution, this error may have affected the evaluation of several courses, including EE 202 (Circuit Analysis), EE 178 (Digital Principles), EAS 240 (Introduction to Programming for Engineers), MTH 241 (Calculus 3), and MTH 306 (Differential Equations).
+
+Could you please:
+1. Correct the source institution to University at Buffalo;
+2. Reprocess or re-review the affected courses under UB equivalencies;
+3. Let me know who owns this correction and the expected timeline?
+
+This is time-sensitive because the current evaluations are blocking my Fall 2026 registration. I am happy to provide enrollment verification or transcripts showing the correct institution.
+
+Thank you very much,
+Honghan Zheng · NUID 003972364</div>
+</div>
+
+<h3>10.3 会后 24 小时内:锁定承诺 <span class="en">Post-meeting confirmation</span></h3>
+<div class="email">
+  <div class="subject">Subject: Confirming Next Steps from Today's Advising Meeting — Honghan Zheng, NUID 003972364</div>
+  <div class="body">Hi Megan,
+
+Thank you for meeting with me today. To make sure I execute correctly, here is my understanding of what we agreed — please correct anything I've misstated:
+
+1. Fall courses I should register for now: [list]
+2. Overrides / manual registrations you will process, and when: [list + dates]
+3. Source-institution correction: owned by [name/office], expected by [date]
+4. Courses being re-evaluated (with syllabi submitted): [list], expected by [date]
+5. Requirements confirmed as satisfied (no retake needed): [list]
+6. Petitions I need to file, with forms and deadlines: [list]
+7. Backup courses if items above slip: [list]
+
+Could you please confirm this summary (or note it in Navigate)? Written confirmation will help me avoid retaking courses unnecessarily.
+
+Thank you again,
+Honghan Zheng · NUID 003972364</div>
+</div>
+
+<h3>10.4 给 ECE 系:EE 178 重评 petition <span class="en">Department petition for EE 178</span></h3>
+<div class="email">
+  <div class="subject">Subject: Petition for Re-evaluation of EE 178 (Digital Principles) — Transfer Credit, Honghan Zheng, NUID 003972364</div>
+  <div class="body">Dear [ECE Undergraduate Program Coordinator],
+
+I am an incoming Fall 2026 BSEE transfer student from the University at Buffalo. My course EE 178 (Digital Principles, 4 credits with a hands-on laboratory) was evaluated as NO TRANSFER, and I would like to request a re-evaluation.
+
+The course covered: number systems; logic gates; Boolean algebra; Karnaugh maps; combinational logic and digital arithmetic; sequential logic and finite state machines; programmable logic devices; memory devices; and lab implementation of combinational and sequential circuits. The attached syllabus details topics, labs, and assessments.
+
+Given this content, I would ask that it be considered for EECE 2322/2323 equivalency; alternatively, for partial substitution (lecture component, with the lab completed at Northeastern) or EECE elective credit. I would also note my record may have carried a source-institution error (University at Buffalo listed as Buffalo State), which may have affected the original evaluation.
+
+Please let me know if any additional documentation would help.
+
+Respectfully,
+Honghan Zheng · NUID 003972364</div>
+</div>
+
+<!-- ================= 11. APPENDIX ================= -->
+<h2 class="pagebreak">11. 证据附录 <span class="en">Evidence Appendix</span></h2>
+
+<h3>11.1 Syllabus 证据速查 <span class="en">Syllabus evidence at a glance</span></h3>
+<table>
+  <tr><th style="width:150px">课程</th><th>Syllabus 关键证据</th><th style="width:160px">最佳 → 底线</th></tr>
+  <tr><td><b>EAS 240</b><br><span class="small">Intro to Programming for Engineers</span></td><td>3 学分;限工程专业;C 语言;过程式编程、条件、函数、指针、文件 I/O、数据结构、算法;编程 labs + project;工程/科学计算应用。</td><td>EECE 2140 substitution → prereq override → general elective</td></tr>
+  <tr><td><b>EE 178</b><br><span class="small">Digital Principles</span></td><td>4 学分;动手 lab;进制、逻辑门、布尔代数、K-map、组合逻辑、数字运算、时序逻辑、FSM、PLD、存储器;lab 中实现组合/时序电路。</td><td>EECE 2322/2323 → partial → EECE elective → general elective</td></tr>
+  <tr><td><b>EE 202</b><br><span class="small">Circuit Analysis</span></td><td>3 学分;电压/电流源、电感/电容、欧姆/基尔霍夫定律、节点/网孔分析、RL/RC/RLC、电源变换、叠加、戴维南/诺顿、相量与复阻抗、正弦稳态。</td><td>EECE 2150 satisfied → 只补 lab/组件 → 差额转 elective</td></tr>
+  <tr><td><b>MTH 241</b><br><span class="small">Calculus 3</span></td><td>标准多元微积分:偏导、多重积分、向量微积分。</td><td>MATH 2321 → override</td></tr>
+  <tr><td><b>MTH 306</b><br><span class="small">Differential Equations</span></td><td>常微分方程;⚠ NEU MATH 2341 另含线性代数,需预案(§5.2)。</td><td>MATH 2341(合并/bridge)→ override → elective</td></tr>
+</table>
+
+<h3>11.2 带进会议的材料 <span class="en">Bring to the meeting</span></h3>
+<ul>
+  <li>Student Profile 截图(BSEE Electrical Engineering / standing / advisor 状态)。</li>
+  <li>Banner 成绩单(38 transfer credits posted)+ 转学分 audit 截图(NO RULE / NO TRANSFER 项)——两者不一致处高亮。</li>
+  <li>ENCP 2000 等注册报错截图。</li>
+  <li>全部争议课程 syllabi(EAS 240、EE 178、EE 202、MTH 241、MTH 306、理化课)。</li>
+  <li>Admissions 回复邮件("无法调整 faculty evaluation,请咨询 COE advisor")。</li>
+  <li>本手册:§6 问题清单 + §8 跟进表(打印,现场填写)。</li>
+</ul>
+
+<h3>11.3 官方链接(会前再核对) <span class="en">Official references — verify before the meeting</span></h3>
+<ul class="small">
+  <li>BSEE 培养方案:catalog.northeastern.edu/undergraduate/engineering/electrical-computer/electrical-engineering-bsee/</li>
+  <li>EECE 课程描述:catalog.northeastern.edu/course-descriptions/eece/(核对 EECE 2140/2150/2160/2322/2323 学分)</li>
+  <li>PHYS 课程描述:catalog.northeastern.edu/course-descriptions/phys/(核对 1145–1148 与 1151–1157 序列)</li>
+  <li>转学分政策:admissions.northeastern.edu/application-information/transferring-credit/(核对最低成绩、学分上限)</li>
+  <li>COE Advising / Navigate:northeastern.campus.eab.com</li>
+</ul>
+
+<div class="footer-note">
+  本手册基于学生提供的截图、邮件、transfer audit、Banner 记录与 syllabi 整理;标注"需核对/以 catalog 为准"的编号与学分数请在会前用官方 catalog 核实。最终认定以 Northeastern COE Advising、相关院系与 Registrar/Transfer Credit Office 为准。This document is a preparation aid, not an official determination. · Honghan Zheng · NUID 003972364 · v2 · July 2026
+</div>
+</body>
+</html>
