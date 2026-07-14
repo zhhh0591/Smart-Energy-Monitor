@@ -63,6 +63,21 @@ port1_y = 23;                                    // load / fan wires
 port2_y = 62;                                    // battery wires
 port_z  = 10;                                    // hole centre above plate top
 
+/* ---- 0.96" I2C OLED, window in the top face ---- */
+oled         = true;         // set false to remove display window + mounts
+oled_pos     = [62.5, 48];   // OLED PCB centre in cavity coords
+oled_pcb     = [27.5, 27.8]; // module PCB size
+oled_hole_dx = 23.5;         // mounting hole spacing X
+oled_hole_dy = 23.8;         // mounting hole spacing Y
+oled_hole_d  = 1.6;          // pilot for M2 self-tapping screw
+oled_boss_d  = 4.5;
+oled_gap     = 2.2;          // ceiling underside to PCB top (display glass height)
+oled_win     = [23, 12];     // window = active area + small margin
+oled_win_off = [0, -1.5];    // window centre offset from PCB centre (glass sits low)
+oled_bevel   = 1.4;          // picture-frame chamfer around the window
+oled_pin_w   = 18;           // clearance pocket for the header pin row
+oled_pin_dp  = 1.6;
+
 /* ---- underside ventilation (invisible from above) ---- */
 slot_w = 2.5;  slot_l = 14;  slot_pitch = 6;
 
@@ -157,6 +172,24 @@ module shell() {
       translate([outer_x - wall - 1, wall + py, plate_t + port_z])
         rotate([0, 90, 0]) cylinder(d = port_d, h = wall + 2);
 
+    /* OLED window with chamfered frame, pin pocket, mount pilot holes */
+    if (oled) {
+      ocx = wall + oled_pos[0];  ocy = wall + oled_pos[1];
+      hull() {
+        translate([ocx + oled_win_off[0], ocy + oled_win_off[1], H - top_t - 0.05])
+          linear_extrude(0.05) square(oled_win, center = true);
+        translate([ocx + oled_win_off[0], ocy + oled_win_off[1], H + 0.05])
+          linear_extrude(0.05)
+            square([oled_win[0] + 2*oled_bevel, oled_win[1] + 2*oled_bevel], center = true);
+      }
+      translate([ocx - oled_pin_w/2, ocy + oled_pcb[1]/2 - 6, H - top_t - 0.05])
+        cube([oled_pin_w, 7, oled_pin_dp + 0.05]);
+      for (sx = [-1, 1], sy = [-1, 1])
+        translate([ocx + sx*oled_hole_dx/2, ocy + sy*oled_hole_dy/2,
+                   H - top_t - 0.1])
+          cylinder(d = oled_hole_d, h = 1.9);
+    }
+
     /* engraved wordmark, front wall */
     if (wordmark != "")
       translate([outer_x/2, wm_deep, wm_z])
@@ -165,6 +198,17 @@ module shell() {
             text(wordmark, size = wm_size, halign = "center", valign = "center",
                  spacing = 1.18, font = "Liberation Sans");
   }
+
+  /* OLED mount bosses, hanging from the ceiling */
+  if (oled)
+    for (sx = [-1, 1], sy = [-1, 1])
+      translate([wall + oled_pos[0] + sx*oled_hole_dx/2,
+                 wall + oled_pos[1] + sy*oled_hole_dy/2,
+                 H - top_t - oled_gap])
+        difference() {
+          cylinder(d = oled_boss_d, h = oled_gap + 0.2);
+          translate([0, 0, -0.1]) cylinder(d = oled_hole_d, h = oled_gap + 0.3);
+        }
 
   /* corner bosses — cylinders overlapping the rounded corner walls,
      clipped so nothing pokes through the outer surface */

@@ -4,13 +4,16 @@ Parametric OpenSCAD enclosure for the ESP32 + INA219 + relay energy monitor,
 styled after minimalist consumer hardware: one-piece top shell with large
 corner radii and a rolled top edge, **no visible fasteners** (screwed from
 below, screws hidden under adhesive rubber feet), all ventilation on the
-underside, and a subtle engraved wordmark on the front.
+underside, a subtle engraved wordmark on the front, and a chamfer-framed
+window in the top face for a 0.96" I²C OLED status display.
 
 **All dimensions are placeholders based on typical modules** — measure your
 actual boards and edit the `PARAMETERS` block at the top of
 [`enclosure.scad`](./enclosure.scad), then re-export.
 
 ![Closed enclosure](./preview-beauty.png)
+
+![Top view with OLED window](./preview-top.png)
 
 ![Exploded view](./preview-assembly.png)
 
@@ -27,7 +30,12 @@ actual boards and edit the `PARAMETERS` block at the top of
 
 - **Top shell**: seamless walls + top, 9 mm plan radius, 2.8 mm rolled top
   edge; USB opening on the left, two Ø8 mm wire ports on the right
-  (battery in, fan/load out), engraved `ENERGY MON` wordmark on the front.
+  (battery in, fan/load out), engraved `ENERGY MON` wordmark on the front,
+  and a chamfer-framed OLED window. The display module screws onto four M2
+  bosses hanging from the inside of the top face (glass ~2.2 mm below the
+  surface), with a clearance pocket for its header-pin row. The OLED shares
+  the I²C bus with the INA219 — no extra wall opening needed. Set
+  `oled = false` to remove the window and mounts entirely.
 - **Bottom plate**: drops into a rebate in the shell rim, flush with the
   bottom. Carries all PCB standoffs (ESP32 4×, INA219 2×, relay 4×) and two
   hidden vent grilles under the warm bays.
@@ -57,6 +65,9 @@ build plate make the big top face look particularly good.
 | `inner_z` | Tallest component (usually the relay cube) + clearance |
 | `port_d`, `port1_y`, `port2_y` | Wire bundle diameter and port positions |
 | `wordmark` | Any text you like, `""` for a fully clean front |
+| `oled_pcb`, `oled_hole_dx/dy` | OLED module PCB size and mounting-hole spacing |
+| `oled_win`, `oled_win_off` | Visible-glass window size and its offset from the PCB centre |
+| `oled_pos` | Where the display sits on the top face (cavity coords) |
 
 ## Export
 
