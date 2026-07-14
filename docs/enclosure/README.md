@@ -11,6 +11,8 @@ window in the top face for a 0.96" I²C OLED status display.
 actual boards and edit the `PARAMETERS` block at the top of
 [`enclosure.scad`](./enclosure.scad), then re-export.
 
+![All views](./preview-views.png)
+
 ![Closed enclosure](./preview-beauty.png)
 
 ![Top view with OLED window](./preview-top.png)
@@ -30,7 +32,7 @@ actual boards and edit the `PARAMETERS` block at the top of
 
 - **Top shell**: seamless walls + top, 9 mm plan radius, 2.8 mm rolled top
   edge; USB opening on the left, two Ø8 mm wire ports on the right
-  (battery in, fan/load out), engraved `ENERGY MON` wordmark on the front,
+  (battery in, fan/load out), engraved `VOLTA` wordmark on the front,
   and a chamfer-framed OLED window. The display module screws onto four M2
   bosses hanging from the inside of the top face (glass ~2.2 mm below the
   surface), with a clearance pocket for its header-pin row. The OLED shares

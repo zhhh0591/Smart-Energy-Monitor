@@ -82,7 +82,7 @@ oled_pin_dp  = 1.6;
 slot_w = 2.5;  slot_l = 14;  slot_pitch = 6;
 
 /* ---- wordmark, engraved low on the front wall ---- */
-wordmark      = "ENERGY MON";
+wordmark      = "VOLTA";
 wm_size       = 4.2;
 wm_deep       = 0.6;
 wm_z          = 6.5;    // text centreline above shell bottom
@@ -196,7 +196,7 @@ module shell() {
         rotate([90, 0, 0])
           linear_extrude(wm_deep + 0.1)
             text(wordmark, size = wm_size, halign = "center", valign = "center",
-                 spacing = 1.18, font = "Liberation Sans");
+                 spacing = 1.4, font = "Liberation Sans");
   }
 
   /* OLED mount bosses, hanging from the ceiling */
