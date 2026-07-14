@@ -7,6 +7,7 @@ Fritzing-style SVG wiring diagrams for the ESP32 + INA219 DC energy monitoring p
 | [`phase1-wiring.svg`](./phase1-wiring.svg) | Phase 1 · Basic measurement: ESP32 + INA219 + DC fan + battery; load current flows in series through the INA219 (Vin+ → Vin−) |
 | [`phase2-dataflow.svg`](./phase2-dataflow.svg) | Phase 2 · Data flow (no new hardware): INA219 → ESP32 (WiFi/MQTT) → MQTT broker → web dashboard |
 | [`phase4-wiring.svg`](./phase4-wiring.svg) | Phase 4 · Relay control & protection: adds a relay (COM/NO) into the Phase 1 load path, switched by GPIO26 |
+| [`assembly-3d.html`](./assembly-3d.html) | Interactive 3D assembly model (Three.js, fully self-contained single file). Open in any browser: drag to rotate, scroll to zoom, buttons toggle Phase 1 / Phase 4 wiring |
 
 ## Pin reference
 
