@@ -206,3 +206,36 @@ if (part == "print") {
   translate([0, outer_y + 12 + outer_y, lid_t])
     rotate([180, 0, 0]) lid();
 }
+
+/* ---- documentation view: base with dummy PCBs in their bays ---- */
+module dummy_board(pos, size, name, c, tsize) {
+  color(c, 0.9) translate([pos[0], pos[1], 0]) cube([size[0], size[1], 1.6]);
+  color("white") translate([pos[0]+size[0]/2, pos[1]+size[1]/2, 1.6])
+    linear_extrude(0.5)
+      text(name, size = tsize, halign = "center", valign = "center",
+           font = "Liberation Sans:style=Bold");
+}
+
+module ground_label(x, y, name, tsize=5) {
+  color("#334155") translate([x, y, 0.01]) linear_extrude(0.4)
+    text(name, size = tsize, halign = "center", valign = "center",
+         font = "Liberation Sans:style=Bold");
+}
+
+if (part == "layout") {
+  color("#b9c8d4") base();
+  translate([wall, wall, floor_t + standoff_h]) {
+    dummy_board(esp_pos, esp_size, "ESP32", "SeaGreen", 7);
+    dummy_board(ina_pos, ina_size, "INA219", "Purple", 4.5);
+    dummy_board(rly_pos, rly_size, "RELAY", "RoyalBlue", 6);
+    /* relay cube silhouette */
+    color("SkyBlue", 0.55) translate([rly_pos[0]+4, rly_pos[1]+5, 1.6])
+      cube([19, 15, 16]);
+  }
+  /* feature labels on the ground around the box */
+  ground_label(-16, wall + esp_pos[1] + esp_size[1]/2, "USB");
+  ground_label(outer_x + 22, wall + port1_y - 6, "FAN /");
+  ground_label(outer_x + 22, wall + port1_y - 14, "LOAD");
+  ground_label(outer_x + 24, wall + port2_y - 6, "BATTERY");
+  ground_label(outer_x/2, -12, "VENTS");
+}

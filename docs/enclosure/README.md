@@ -7,12 +7,14 @@ actual boards and edit the `PARAMETERS` block at the top of
 
 ![Exploded view](./preview-assembly.png)
 
+![Component layout](./preview-layout.png)
+
 | File | Description |
 | --- | --- |
 | `enclosure.scad` | Parametric source (edit this) |
 | `enclosure-base.stl` | Bottom shell, ready to print (placeholder dims) |
 | `enclosure-lid.stl` | Lid, ready to print (placeholder dims) |
-| `preview-*.png` | Rendered previews (exploded / inside / print layout) |
+| `preview-*.png` | Rendered previews (exploded / layout / inside / print) |
 
 ## Features
 
