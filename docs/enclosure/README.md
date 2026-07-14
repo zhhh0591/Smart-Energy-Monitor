@@ -4,8 +4,9 @@ Parametric OpenSCAD enclosure for the ESP32 + INA219 + relay energy monitor,
 styled after minimalist consumer hardware: one-piece top shell with large
 corner radii and a rolled top edge, **no visible fasteners** (screwed from
 below, screws hidden under adhesive rubber feet), all ventilation on the
-underside, a subtle engraved wordmark on the front, and a chamfer-framed
-window in the top face for a 0.96" I²C OLED status display.
+underside, a ZUTOMAYO-styled dress-up (capsule wordmark badge on the front, eye and
+sparkle motifs engraved in the top face — fan-art styling for personal use),
+and a chamfer-framed window in the top face for a 0.96" I²C OLED display.
 
 **All dimensions are placeholders based on typical modules** — measure your
 actual boards and edit the `PARAMETERS` block at the top of
@@ -32,8 +33,9 @@ actual boards and edit the `PARAMETERS` block at the top of
 
 - **Top shell**: seamless walls + top, 9 mm plan radius, 2.8 mm rolled top
   edge; USB opening on the left, two Ø8 mm wire ports on the right
-  (battery in, fan/load out), engraved `VOLTA` wordmark on the front,
-  and a chamfer-framed OLED window. The display module screws onto four M2
+  (battery in, fan/load out), an engraved ZUTOMAYO capsule badge on the
+  front, ZTMY eye + sparkle motifs on the top face (`wordmark`, `eye_on`,
+  `star_on` parameters), and a chamfer-framed OLED window. The display module screws onto four M2
   bosses hanging from the inside of the top face (glass ~2.2 mm below the
   surface), with a clearance pocket for its header-pin row. The OLED shares
   the I²C bus with the INA219 — no extra wall opening needed. Set
@@ -66,7 +68,8 @@ build plate make the big top face look particularly good.
 | `usb_w`, `usb_h`, `usb_z` | USB connector width/height and height above the plate top |
 | `inner_z` | Tallest component (usually the relay cube) + clearance |
 | `port_d`, `port1_y`, `port2_y` | Wire bundle diameter and port positions |
-| `wordmark` | Any text you like, `""` for a fully clean front |
+| `wordmark` | Badge text, `""` for a clean front |
+| `eye_on`, `star_on`, `eye_pos`, `star_pos` | Toggle / move the top-face motifs |
 | `oled_pcb`, `oled_hole_dx/dy` | OLED module PCB size and mounting-hole spacing |
 | `oled_win`, `oled_win_off` | Visible-glass window size and its offset from the PCB centre |
 | `oled_pos` | Where the display sits on the top face (cavity coords) |

@@ -81,11 +81,21 @@ oled_pin_dp  = 1.6;
 /* ---- underside ventilation (invisible from above) ---- */
 slot_w = 2.5;  slot_l = 14;  slot_pitch = 6;
 
-/* ---- wordmark, engraved low on the front wall ---- */
-wordmark      = "VOLTA";
-wm_size       = 4.2;
-wm_deep       = 0.6;
-wm_z          = 6.5;    // text centreline above shell bottom
+/* ---- ZUTOMAYO-style dress-up ---- */
+wordmark   = "ZUTOMAYO"; // engraved in a capsule badge on the front wall
+wm_size    = 5.2;
+wm_deep    = 0.6;
+wm_z       = 9.5;        // badge centreline above shell bottom
+badge_w    = 54;         // capsule badge outline
+badge_h    = 13;
+badge_line = 1.3;
+eye_on     = true;       // ZTMY eye motif, engraved in the top face
+eye_pos    = [28, 46];   // global XY on the top face
+eye_w      = 18;
+eye_h      = 9;
+star_on    = true;       // little four-point sparkle
+star_pos   = [104, 21];
+star_r     = 6;
 
 /* ===================== derived ===================== */
 outer_x = inner_x + 2*wall;
@@ -110,6 +120,46 @@ module rsolid(x, y, h, r, edge) {
   hull()
     for (cx = [r, x - r], cy = [r, y - r])
       translate([cx, cy, 0]) rounded_col(r, edge, h);
+}
+
+/* ---- ZUTOMAYO 2D motifs ---- */
+module capsule2d(w, h) {
+  offset(r = h/2) square([w - h, 0.01], center = true);
+}
+
+module badge2d() {   // capsule outline + wordmark, sticker style
+  difference() {
+    capsule2d(badge_w, badge_h);
+    capsule2d(badge_w - 2*badge_line, badge_h - 2*badge_line);
+  }
+  if (wordmark != "")
+    text(wordmark, size = wm_size, halign = "center", valign = "center",
+         spacing = 1.06, font = "Liberation Sans:style=Bold");
+}
+
+module eye2d() {     // almond eye with iris ring, pupil and lashes
+  R = (pow(eye_w/2, 2) + pow(eye_h/2, 2)) / eye_h;
+  line = 1.2;
+  difference() {
+    intersection() {
+      translate([0,  R - eye_h/2]) circle(R);
+      translate([0, -(R - eye_h/2)]) circle(R);
+    }
+    intersection() {
+      translate([0,  R - eye_h/2]) circle(R - line);
+      translate([0, -(R - eye_h/2)]) circle(R - line);
+    }
+  }
+  difference() { circle(3.3); circle(2.1); }   // iris
+  circle(1.15);                                 // pupil
+  for (a = [-32, 0, 32])                        // lashes
+    rotate(a) translate([0, eye_h/2 + 2.4]) square([1.2, 3.4], center = true);
+}
+
+module star2d(r) {
+  rotate(15)
+    polygon([[0, r], [r*0.32, r*0.32], [r, 0], [r*0.32, -r*0.32],
+             [0, -r], [-r*0.32, -r*0.32], [-r, 0], [-r*0.32, r*0.32]]);
 }
 
 module standoff(h) {
@@ -190,13 +240,19 @@ module shell() {
           cylinder(d = oled_hole_d, h = 1.9);
     }
 
-    /* engraved wordmark, front wall */
+    /* engraved capsule badge, front wall */
     if (wordmark != "")
       translate([outer_x/2, wm_deep, wm_z])
         rotate([90, 0, 0])
-          linear_extrude(wm_deep + 0.1)
-            text(wordmark, size = wm_size, halign = "center", valign = "center",
-                 spacing = 1.4, font = "Liberation Sans");
+          linear_extrude(wm_deep + 0.1) badge2d();
+
+    /* ZTMY eye + sparkle, engraved in the top face */
+    if (eye_on)
+      translate([eye_pos[0], eye_pos[1], H - wm_deep])
+        linear_extrude(wm_deep + 0.1) eye2d();
+    if (star_on)
+      translate([star_pos[0], star_pos[1], H - wm_deep])
+        linear_extrude(wm_deep + 0.1) star2d(star_r);
   }
 
   /* OLED mount bosses, hanging from the ceiling */
